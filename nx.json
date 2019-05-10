@@ -7,5 +7,15 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "gantt": {
+      "tags": []
+    },
+    "gantt-e2e": {
+      "tags": []
+    },
+    "gantt-chart": {
+      "tags": []
+    }
+  }
 }

@@ -2,7 +2,131 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "gantt": {
+      "root": "apps/gantt/",
+      "sourceRoot": "apps/gantt/src",
+      "projectType": "application",
+      "prefix": "gantt",
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "style": "sass"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/gantt",
+            "index": "apps/gantt/src/index.html",
+            "main": "apps/gantt/src/main.ts",
+            "polyfills": "apps/gantt/src/polyfills.ts",
+            "tsConfig": "apps/gantt/tsconfig.app.json",
+            "assets": ["apps/gantt/src/favicon.ico", "apps/gantt/src/assets"],
+            "styles": ["apps/gantt/src/styles.scss"],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/gantt/src/environments/environment.ts",
+                  "with": "apps/gantt/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "gantt:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "gantt:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "gantt:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/gantt/tsconfig.app.json",
+              "apps/gantt/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "apps/gantt/src/test.ts",
+            "tsConfig": "apps/gantt/tsconfig.spec.json",
+            "karmaConfig": "apps/gantt/karma.conf.js",
+            "polyfills": "apps/gantt/src/polyfills.ts",
+            "styles": [],
+            "scripts": [],
+            "assets": []
+          }
+        }
+      }
+    },
+    "gantt-chart": {
+      "root": "libs/gantt-chart",
+      "sourceRoot": "libs/gantt-chart/src",
+      "projectType": "library",
+      "prefix": "gantt",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/gantt-chart/tsconfig.lib.json",
+              "libs/gantt-chart/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "libs/gantt-chart/src/test.ts",
+            "tsConfig": "libs/gantt-chart/tsconfig.spec.json",
+            "karmaConfig": "libs/gantt-chart/karma.conf.js"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "styleext": "sass"
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
@@ -16,6 +140,29 @@
     },
     "@nrwl/schematics:library": {
       "style": "sass"
+    },
+    "@schematics/angular:component": {
+      "styleext": "scss",
+      "spec": false
+    },
+    "@schematics/angular:class": {
+      "spec": false
+    },
+    "@schematics/angular:directive": {
+      "spec": false
+    },
+    "@schematics/angular:guard": {
+      "spec": false
+    },
+    "@schematics/angular:module": {
+      "spec": false
+    },
+    "@schematics/angular:pipe": {
+      "spec": false
+    },
+    "@schematics/angular:service": {
+      "spec": false
     }
-  }
+  },
+  "defaultProject": "gantt"
 }
