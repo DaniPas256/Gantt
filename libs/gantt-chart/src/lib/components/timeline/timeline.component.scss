@@ -1,0 +1,33 @@
+$border-color: #d4d4d4;
+
+.scale__wrapper {
+  div.scale__units {
+    display: flex;
+    text-align: center;
+    .scale__unit {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      position: relative;
+      &:after {
+        content: "";
+        height: 100%;
+        width: 1px;
+        background: $border-color;
+        position: absolute;
+        right: 0;
+      }
+    }
+    > :first-child {
+      &:before {
+        content: "";
+        height: 100%;
+        width: 1px;
+        background: $border-color;
+        position: absolute;
+        left: 0;
+      }
+    }
+  }
+}

@@ -9,6 +9,6 @@ import { Helpers } from './classes/helpers';
 export class EntryComponent implements OnInit {
 
   ngOnInit() {
-    console.log(Helpers.generateDates('2019-12-20', '2020-01-10'));
+    console.log();
   }
 }

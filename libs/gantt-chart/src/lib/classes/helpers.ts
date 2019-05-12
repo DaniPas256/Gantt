@@ -48,20 +48,27 @@ export class Helpers {
             days: {},
             months: {},
             weeks: {},
-            years: {}
+            quarter: {},
+            years: {},
+            totalNoD: 0
         };
-
-        let scale_days = 0;
 
         let i = 0;
         while (moment(start).isSameOrBefore(end, 'day')) {
+            dates.totalNoD++;
+
             const daysInYear = moment(start).isLeapYear() ? 366 : 365;
             const daysInMonth = moment(start).daysInMonth();
             const weeksInYear = moment(start).weeksInYear();
             const year = moment(start).format('YYYY');
+            const quarter = moment(start).quarter();
             const month = moment(start).format('MMMM');
             const week = moment(start).format('WW');
             const day = moment(start).format('DDDD');
+
+            setProp(dates, ['quarter', `${year}-${quarter}`, 'number'], 'Add');
+            setProp(dates, ['quarter', `${year}-${quarter}`, 'name'], quarter);
+
 
             setProp(dates, ['years', year, 'number'], 'Add');
             setProp(dates, ['years', year, 'max'], daysInYear);
