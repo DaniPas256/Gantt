@@ -1,12 +1,6 @@
 import * as moment from 'moment';
 
 export class Helpers {
-
-    /**
-     * Generates scale dates
-     *
-     * @memberof AsterGantt
-     */
     static generateDates(start, end) {
         let setProp = (obj, arr, val) => {
             if (typeof arr === 'string') {
@@ -35,6 +29,15 @@ export class Helpers {
             }
 
             return obj;
+        }
+
+        let toRoman = (digit: number) => {
+            switch (digit) {
+                case 1: return 'I';
+                case 2: return 'II';
+                case 3: return 'III';
+                case 4: return 'IV';
+            }
         }
 
         moment.locale('pl', {
@@ -67,7 +70,7 @@ export class Helpers {
             const day = moment(start).format('DDDD');
 
             setProp(dates, ['quarter', `${year}-${quarter}`, 'number'], 'Add');
-            setProp(dates, ['quarter', `${year}-${quarter}`, 'name'], quarter);
+            setProp(dates, ['quarter', `${year}-${quarter}`, 'name'], toRoman(quarter));
 
 
             setProp(dates, ['years', year, 'number'], 'Add');

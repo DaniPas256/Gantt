@@ -1,0 +1,16 @@
+<div class="workspace__container"
+  [ngStyle]="{ 'height.px': task_list_config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales), 'width.px': day * timeline_config.number_of_days }">
+
+  <ng-container *ngFor='let task of tasks'>
+    <div class="task__row" [ngStyle]='{ "height.px": task_list_config.row_height }'>
+      <div class="task_bar" [ngClass]="task.props.classes"
+        [ngStyle]="{ 'height.px': config.task_height, 'width.px': task.props.duration * day, 'transform': taskPosition( task ) }">
+        <span class="task_name">{{ task.name }}</span>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<pre>
+  {{ this.tasks | json }}
+</pre>

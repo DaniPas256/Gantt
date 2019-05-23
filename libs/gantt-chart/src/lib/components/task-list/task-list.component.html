@@ -1,0 +1,22 @@
+<div class="column__names"
+  [style.height]=' timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales + "px"'>
+  <ng-container *ngFor='let column of config.columns'>
+    <div class="column" [style.width]='column.width + "px"' *ngIf='column.visible'>
+      {{ column.header }}
+    </div>
+  </ng-container>
+</div>
+
+<div class="column__values"
+  [style.height]=' config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales) + "px" '>
+  <ng-container *ngFor='let task of tasks'>
+    <div class="task__columns">
+      <ng-container *ngFor='let column of config.columns'>
+        <div class="task__column--task" [ngStyle]='{ "height.px": config.row_height, "width.px": column.width }'
+          *ngIf='column.visible'>
+          <span class="overflow__text">{{ column.template( task ) }}</span>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
