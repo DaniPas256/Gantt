@@ -65,7 +65,11 @@ export class GanttService {
       duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
       left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
       classes: 'draggable',
-      moneyPipe: this.currencyPipe.transform
+      drag: 0,
+      resize: 0,
+      day_size: this.day_size,
+      padding: this.config.workspace.task_padding_top,
+      moneyPipe: this.currencyPipe.transform,
     }
   }
 

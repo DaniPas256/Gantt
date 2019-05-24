@@ -3,9 +3,17 @@
 
   <ng-container *ngFor='let task of tasks'>
     <div class="task__row" [ngStyle]='{ "height.px": task_list_config.row_height }'>
-      <div class="task_bar" [ngClass]="task.props.classes"
+
+      <span resizable (endResize)='endTaskResize($event, "left")' class="resize_handler resize_handler--left"
+        [task]='task' [ngStyle]="{ 'height.px': config.task_height, 'transform': taskPosition( task ) }"></span>
+
+      <span resizable (endResize)='endTaskResize($event, "right")' class="resize_handler resize_handler--right"
+        [task]='task'
+        [ngStyle]="{ 'height.px': config.task_height, 'transform': taskPosition( task, task.props.duration * day ) }"></span>
+
+      <div class="task_bar" [ngClass]="task.props.classes" draggable (endDrag)='endTaskDrag($event)' [task]='task'
         [ngStyle]="{ 'height.px': config.task_height, 'width.px': task.props.duration * day, 'transform': taskPosition( task ) }">
-        <span class="task_name">{{ task.name }}</span>
+        <span class="task_name">{{ task.name }} # {{ task.props.drag }}</span>
       </div>
     </div>
   </ng-container>

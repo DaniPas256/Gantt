@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 5;
     .task_name {
       color: white;
     }
@@ -24,4 +25,24 @@
 
 .workspace__container {
   box-shadow: 0 1px #d4d4d4, -1px 0 #d4d4d4 inset;
+  overflow: hidden;
+}
+
+.resize_handler {
+  position: absolute;
+  height: 100%;
+  width: 4px;
+  background: black;
+  top: 1px;
+  cursor: e-resize;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.resize_handler--left {
+  left: -10px;
+}
+
+.resize_handler--right {
+  left: 10px;
 }
