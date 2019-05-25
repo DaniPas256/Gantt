@@ -36,6 +36,10 @@ export class WorkspaceComponent implements OnInit {
     return this.ganttService.config.timeline;
   }
 
+  public isTaskVisible(task) {
+    return this.ganttService.isTaskVisible(task);
+  }
+
   public taskPosition(task: ITask) {
     const drag_offset = Math.floor(task.props.drag / this.day) * this.day;
     const resize_offset = Math.floor(task.props.resize_left / this.day) * this.day;

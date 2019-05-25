@@ -11,7 +11,7 @@ import { ResizableDirective } from './directives/Resizable.directive';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective],
+  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe],
   providers: [GanttService, MoneyPipe],
   exports: [EntryComponent]
 })

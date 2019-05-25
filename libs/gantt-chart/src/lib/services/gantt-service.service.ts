@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { columns } from './../config/task-list-columns';
-import generateTask, { ITask } from '../interfaces/ITask';
 import * as moment from 'moment';
 import { MoneyPipe } from '../pipes/money.pipe';
+import generateTask, { ITask } from '../interfaces/ITask';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,8 @@ export class GanttService {
   constructor(private currencyPipe: MoneyPipe) { }
 
   public tasks: Array<ITask> = [generateTask(1, 0), generateTask(2, 0), generateTask(3, 2), generateTask(4, 3)];
+  public tasks_object: any;
+
   // , generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask()
 
   public config = {
@@ -54,9 +56,9 @@ export class GanttService {
   }
 
   public calc_tasks_details() {
-    this.tasks.map(item => {
-      this.task_details(item);
-    });
+    this.tasks_object = {};
+    this.tasks.forEach(item => this.tasks_object[item.id] = item);
+    this.tasks.map(item => this.task_details(item));
     this.generateAdditionalTaskProperty();
   }
 
@@ -72,6 +74,9 @@ export class GanttService {
         day_size: this.day_size,
         padding: this.config.workspace.task_padding_top,
         moneyPipe: this.currencyPipe.transform,
+        expanded: false,
+        parents: this.getTaskParents(task) || [],
+        has_children: this.tasks.find(item => item.parent == task.id) !== undefined
       }
     } else {
       task.props.duration = moment(task.end_date).diff(moment(task.start_date), 'day') + 1;
@@ -84,43 +89,49 @@ export class GanttService {
   }
 
   generateAdditionalTaskProperty() {
-    const points_to_search = [0];
-
+    const points_to_search = new Set([0]);
+    const skip_children = new Set();
     let counter = 1;
-    const skip_id = new Set();
 
-    for (const key of points_to_search) {
-      while (true) {
-        const task = this.tasks.find(
-          item => item.parent === key && !skip_id.has(item.id)
+    points_to_search.forEach(key => {
+      let task: ITask | boolean = true;
+      while (task !== undefined) {
+        task = this.tasks.find(
+          item => item.parent === key && !skip_children.has(item.id)
         );
+        const parent = this.tasks_object[key] || undefined;
 
         if (task === undefined) {
-          break;
+          continue;
         }
+        points_to_search.add(task.id);
 
-        if (!points_to_search.includes(task.id)) {
-          points_to_search.push(task.id);
-        }
-
-        let parent = this.tasks.find(item => item.id === key);
-        const index = this.tasks.findIndex(item => task.id === item.id);
-
-        if (parent === undefined) {
-          this.tasks[index].props.$number = counter;
-        } else {
-          this.tasks[index].props.$number = parent.props.$number + '.' + counter;
-        }
-
-        this.tasks[index].props.order = counter;
-        this.tasks[index].props.$depth = parent === undefined ? 1 : parent.props.$depth + 1;
+        task.props.$number = parent === undefined ? counter : parent.props.$number + '.' + counter;
+        task.props.order = counter;
+        task.props.$sort_name = counter + task.name;
+        task.props.$depth = parent === undefined ? 1 : parent.props.$depth + 1;
 
         counter++;
-        skip_id.add(task.id);
+        skip_children.add(task.id);
       }
-
       counter = 1;
+    })
+  }
+
+  public getTaskParents(task, accumulator = []) {
+    if (task.parent && this.tasks_object[task.parent] !== undefined) {
+      accumulator.push(task.parent);
+      return this.getTaskParents(this.tasks_object[task.parent], accumulator);
+    } else {
+      if (!task.parent) {
+        return accumulator;
+      } else {
+        console.error('Task parent not exists');
+      }
     }
   }
 
+  public isTaskVisible(task) {
+    return task.props.parents.every(task_id => this.tasks_object[task_id].props.expanded);
+  }
 }

@@ -20,9 +20,14 @@ export const columns = [
     {
         id: 'name',
         header: 'Task name',
-        width: 100,
+        width: 250,
+        indent: true,
         template: (task: ITask) => {
-            return task.name;
+            return `<span class = 'expand__tree ${task.props.has_children ? (task.props.expanded ? "symbol-minus" : "symbol-plus") : ""}'></span> ${task.name}`;
+        },
+        click_event: (task) => {
+            task.props.expanded = !task.props.expanded;
+            // task.props.reference.expanded = task.props.expanded;
         },
         visible: true,
         classes: () => { return '' },

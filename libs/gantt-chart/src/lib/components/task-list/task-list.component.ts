@@ -22,6 +22,10 @@ export class TaskListComponent implements OnInit {
     return this.ganttService.config.timeline;
   }
 
+  public isTaskVisible(task) {
+    return this.ganttService.isTaskVisible(task);
+  }
+
   ngOnInit() {
     console.log(this.config);
   }

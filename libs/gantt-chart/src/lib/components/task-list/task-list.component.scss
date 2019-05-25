@@ -27,7 +27,6 @@
     box-shadow: 0px 1px $border-color;
     .task__column--task {
       display: flex;
-      justify-content: center;
       align-items: center;
       padding: 5px;
       box-shadow: 1px 0px $border-color;
@@ -38,6 +37,30 @@
       }
       &:last-child {
         border-right: none;
+      }
+    }
+  }
+}
+
+.indent {
+  display: inline-block;
+}
+
+::ng-deep {
+  .overflow__text {
+    position: relative;
+    .expand__tree {
+      position: absolute;
+      margin-left: -10px;
+      &.symbol-plus {
+        &::before {
+          content: "+";
+        }
+      }
+      &.symbol-minus {
+        &::before {
+          content: "-";
+        }
       }
     }
   }
