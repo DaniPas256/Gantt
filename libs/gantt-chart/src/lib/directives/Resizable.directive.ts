@@ -7,11 +7,12 @@ import { ITask } from '../interfaces/ITask';
   selector: '[resizable]'
 })
 export class ResizableDirective implements AfterViewInit, OnDestroy {
-  @Output() endResize: EventEmitter<{ resize: number, task_id: number }> = new EventEmitter();
+  @Output() endResize: EventEmitter<{ task_id: number, edge: string }> = new EventEmitter();
 
   @Input() resizeHandle: string;
   @Input() resizeTarget: string;
   @Input() task: ITask;
+  @Input() edge: string;
 
   private target: HTMLElement;
   private handle: HTMLElement;
@@ -54,7 +55,7 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
     }), takeUntil(this.destroy$));
 
     mousedrag$.subscribe(() => {
-      if (this.delta.x === 0 && this.delta.y === 0) {
+      if (this.delta.x === 0) {
         return;
       }
 
@@ -62,7 +63,9 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
-      this.endResize.emit({ resize: this.delta.x, task_id: this.task.id });
+      if (this.delta.x != 0) {
+        this.endResize.emit({ task_id: this.task.id, edge: this.edge });
+      }
 
       this.offset.x += this.delta.x;
       this.offset.y += this.delta.y;
@@ -72,7 +75,13 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
 
   private resize() {
     requestAnimationFrame(() => {
-      this.task.props.resize = this.delta.x;
+      if (this.edge === "left") {
+        this.task.props.resize_left = this.delta.x;
+      }
+
+      if (this.edge === "right") {
+        this.task.props.resize_right = this.delta.x;
+      }
     });
   }
 }

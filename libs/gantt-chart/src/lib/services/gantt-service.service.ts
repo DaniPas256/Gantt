@@ -55,21 +55,31 @@ export class GanttService {
 
   public calc_tasks_details() {
     this.tasks.map(item => {
-      item.props = this.task_details(item);
+      this.task_details(item);
     });
     this.generateAdditionalTaskProperty();
   }
 
   public task_details(task: ITask) {
-    return {
-      duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
-      left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
-      classes: 'draggable',
-      drag: 0,
-      resize: 0,
-      day_size: this.day_size,
-      padding: this.config.workspace.task_padding_top,
-      moneyPipe: this.currencyPipe.transform,
+    if (task.props === undefined) {
+      task.props = {
+        duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
+        left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
+        classes: 'draggable',
+        drag: 0,
+        resize_left: 0,
+        resize_right: 0,
+        day_size: this.day_size,
+        padding: this.config.workspace.task_padding_top,
+        moneyPipe: this.currencyPipe.transform,
+      }
+    } else {
+      task.props.duration = moment(task.end_date).diff(moment(task.start_date), 'day') + 1;
+      task.props.left = moment(task.start_date).diff(moment(this.chart_start_date), 'day');
+      task.props.drag = 0;
+      task.props.resize_left = 0;
+      task.props.resize_right = 0;
+      task.props.day_size = this.day_size;
     }
   }
 

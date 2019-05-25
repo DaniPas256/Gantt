@@ -56,7 +56,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
     }), takeUntil(this.destroy$));
 
     mousedrag$.subscribe(() => {
-      if (this.delta.x === 0 && this.delta.y === 0) {
+      if (this.delta.x === 0) {
         return;
       }
 
@@ -64,8 +64,9 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
-      this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id });
-
+      if (this.delta.x != 0) {
+        this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id });
+      }
       this.offset.x += this.delta.x;
       this.offset.y += this.delta.y;
       this.delta = { x: 0, y: 0 };
