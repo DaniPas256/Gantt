@@ -1,22 +1,18 @@
 $border-color: #d4d4d4;
-$task-background: #1abc9c;
-$task-border: #16a085;
+
+$task-started-color: #3498db;
+$task-started-border: #2980b9;
+
+$task-in-progress-color: #9b59b6;
+$task-in-progress-border: #8e44ad;
+
+$task-completed-color: #2ecc71;
+$task-completed-border: #27ae60;
+
+$task-delayed-color: #e74c3c;
+$task-delayed-border: #c0392b;
 
 * {
   font-family: "Lato", sans-serif;
   font-size: 12px;
-}
-
-.expand__tree {
-  background: red;
-  &.symbol-plus {
-    &::before {
-      content: "+";
-    }
-  }
-  &.symbol-minus {
-    &::before {
-      content: "-";
-    }
-  }
 }

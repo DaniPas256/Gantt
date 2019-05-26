@@ -49,6 +49,8 @@
 ::ng-deep {
   .overflow__text {
     position: relative;
+    display: flex;
+    align-items: center;
     .expand__tree {
       position: absolute;
       margin-left: -10px;
@@ -63,5 +65,10 @@
         }
       }
     }
+  }
+  .delayed_sign {
+    color: red;
+    font-size: 16px;
+    margin-left: 10px;
   }
 }

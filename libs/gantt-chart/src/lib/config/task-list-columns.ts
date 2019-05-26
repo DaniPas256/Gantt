@@ -23,11 +23,11 @@ export const columns = [
         width: 250,
         indent: true,
         template: (task: ITask) => {
-            return `<span class = 'expand__tree ${task.props.has_children ? (task.props.expanded ? "symbol-minus" : "symbol-plus") : ""}'></span> ${task.name}`;
+            const delayed = `<span class = 'delayed_sign'>⚠</span>`
+            return `<span class = 'expand__tree ${task.props.has_children ? (task.props.expanded ? "symbol-minus" : "symbol-plus") : ""}'></span> ${task.name} ${task.props.is_delayed ? delayed : ''} `;
         },
         click_event: (task) => {
             task.props.expanded = !task.props.expanded;
-            // task.props.reference.expanded = task.props.expanded;
         },
         visible: true,
         classes: () => { return '' },

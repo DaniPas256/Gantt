@@ -8,10 +8,11 @@ import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { MoneyPipe } from './pipes/money.pipe';
 import { DraggableDirective } from './directives/Draggable.directive';
 import { ResizableDirective } from './directives/Resizable.directive';
+import { ProgressDragDirective } from './directives/ProgressDrag.directive';
 
 @NgModule({
   imports: [CommonModule],
-  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe],
+  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe, ProgressDragDirective],
   providers: [GanttService, MoneyPipe],
   exports: [EntryComponent]
 })

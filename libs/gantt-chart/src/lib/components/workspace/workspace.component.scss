@@ -4,15 +4,55 @@
   position: relative;
   box-shadow: 0px 1px $border-color;
   .task_bar {
-    border: 1px solid $task-border;
-    background: $task-background;
     border-radius: 3px;
     position: absolute;
-    box-shadow: 0px -1px 4px 0px $task-border;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 5;
+
+    &.status-started {
+      border: 1px solid $task-started-border;
+      background: $task-started-color;
+      box-shadow: 0px -1px 4px 0px $task-started-color;
+      .task__progress {
+        background: $task-started-border;
+      }
+    }
+
+    &.status-in-progress {
+      border: 1px solid $task-in-progress-border;
+      background: $task-in-progress-color;
+      box-shadow: 0px -1px 4px 0px $task-in-progress-color;
+      .task__progress {
+        background: $task-in-progress-border;
+      }
+    }
+
+    &.status-completed {
+      border: 1px solid $task-completed-border;
+      background: $task-completed-color;
+      box-shadow: 0px -1px 4px 0px $task-completed-color;
+      .task__progress {
+        background: $task-completed-border;
+      }
+    }
+
+    &.task_delayed {
+      border: 1px solid $task-delayed-border;
+      background: $task-delayed-color;
+      box-shadow: 0px -1px 4px 0px $task-delayed-color;
+      .task__progress {
+        background: $task-delayed-border;
+      }
+    }
+
+    .task__progress {
+      height: 100%;
+      position: absolute;
+      left: 0;
+      z-index: -1;
+    }
     .task_name {
       color: white;
     }
@@ -67,4 +107,17 @@
 
 .link_handler--right {
   left: 7px;
+}
+
+.progress_handler {
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  bottom: -3px;
+  border-top: none;
+  margin-left: -5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid black;
+  cursor: e-resize;
 }

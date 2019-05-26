@@ -63,12 +63,22 @@ export class GanttService {
   }
 
   public task_details(task: ITask) {
+    const statuses_class = {
+      'S': 'status-started',
+      'IP': 'status-in-progress',
+      'C': 'status-completed',
+    };
+
+    const is_delayed = moment().isAfter(moment(task.end_date)) && task.status !== 'C';
+
     if (task.props === undefined) {
       task.props = {
         duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
         left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
-        classes: 'draggable',
+        is_delayed,
+        classes: 'draggable ' + statuses_class[task.status] + (is_delayed ? " task_delayed" : ""),
         drag: 0,
+        progress_drag: 0,
         resize_left: 0,
         resize_right: 0,
         day_size: this.day_size,
@@ -82,6 +92,9 @@ export class GanttService {
       task.props.duration = moment(task.end_date).diff(moment(task.start_date), 'day') + 1;
       task.props.left = moment(task.start_date).diff(moment(this.chart_start_date), 'day');
       task.props.drag = 0;
+      task.props.is_delayed = is_delayed;
+      task.props.classes = 'draggable ' + statuses_class[task.status] + (is_delayed ? " task_delayed" : "");
+      task.props.progress_drag = 0;
       task.props.resize_left = 0;
       task.props.resize_right = 0;
       task.props.day_size = this.day_size;

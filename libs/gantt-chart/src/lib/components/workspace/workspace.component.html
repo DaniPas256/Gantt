@@ -13,8 +13,12 @@
 
         <div class="task_bar" [ngClass]="task.props.classes" draggable (endDrag)='endTaskDrag($event)' [task]='task'
           [ngStyle]="{ 'height.px': config.task_height, 'width.px': taskWidth( task ), 'transform': taskPosition( task ) }">
-          <span class="task_name">{{ task.name }}</span>
+          <div class="task__progress" [ngStyle]='{ "width.%": progressValue( task ) }'></div>
+          <span class="task_name">{{ task.name }} / {{ progressValue( task ) }}%</span>
         </div>
+
+        <span class="progress_handler" progress-drag (endDrag)='endProgressDrag($event)' [task]='task'
+          [ngStyle]="{ 'transform': progressPosition( task ) }"></span>
 
         <span class="link_handler link_handler--left" [ngStyle]="{ 'transform': taskPosition( task ) }"></span>
         <span class="link_handler link_handler--right" [ngStyle]="{ 'transform': taskRightEdge( task ) }"></span>

@@ -7,6 +7,7 @@ export interface ITask {
     start_date: string,
     end_date: string,
     parent: number,
+    progress: number,
     props?: any
 }
 
@@ -20,10 +21,11 @@ const generateTask = (id: number = 0, parent: number = 0) => {
         name: 'Name - ' + Math.floor(Math.random() * 100),
         description: 'Description',
         budget: Math.floor(Math.random() * 2000),
-        status: 'S',
+        status: ['S', 'IP', 'C'][getRandomArbitrary(0, 3)],
         parent,
         start_date: '2019-05-0' + getRandomArbitrary(1, 9),
-        end_date: '2019-05-' + getRandomArbitrary(10, 31)
+        end_date: '2019-05-' + getRandomArbitrary(10, 31),
+        progress: getRandomArbitrary(0, 100)
     } as ITask
 }
 
