@@ -12,7 +12,11 @@ $task-completed-border: #27ae60;
 $task-delayed-color: #e74c3c;
 $task-delayed-border: #c0392b;
 
+$form-color: #f9f9f9;
+$overlay-color: rgba(0, 0, 0, 0.4);
+
 * {
   font-family: "Lato", sans-serif;
   font-size: 12px;
+  outline: none;
 }

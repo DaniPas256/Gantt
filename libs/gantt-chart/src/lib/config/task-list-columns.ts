@@ -23,8 +23,9 @@ export const columns = [
         width: 250,
         indent: true,
         template: (task: ITask) => {
-            const delayed = `<span class = 'delayed_sign'>⚠</span>`
-            return `<span class = 'expand__tree ${task.props.has_children ? (task.props.expanded ? "symbol-minus" : "symbol-plus") : ""}'></span> ${task.name} ${task.props.is_delayed ? delayed : ''} `;
+            const delayed = `<span class = 'delayed_sign'>⚠</span>`;
+            const icon = `${task.props.has_children ? (!task.props.expanded ? `<i class="fa fa-folder-o task-icon" aria-hidden="true"></i>` : `<i class="fa fa-folder-open-o task-icon" aria-hidden="true"></i>`) : `<i class="fa fa-file-o task-icon" aria-hidden="true"></i>`}`;
+            return `<span class = 'expand__tree'></span> ${icon} ${task.name} ${task.props.is_delayed ? delayed : ''} `;
         },
         click_event: (task) => {
             task.props.expanded = !task.props.expanded;
@@ -102,6 +103,20 @@ export const columns = [
             editable: (task: ITask) => { return true },
             field_name: 'wbs',
             field_type: 'text'
+        }
+    },
+    {
+        id: 'Actions',
+        header: 'Actions',
+        width: 100,
+        actions: true,
+        template: (task: ITask) => {
+            return ``;
+        },
+        visible: true,
+        classes: () => { return 'actions' },
+        edit: {
+            editable: (task: ITask) => { return false },
         }
     }
 ];

@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<i class="fa fa-paper"></i>
 <div id='gantt1' class="gantt__chart" style="display: flex;height: 500px">
     <div class="gantt_menu" [style.width]='task_list_width + "px"'>
         <gantt-task-list></gantt-task-list>
@@ -7,3 +10,4 @@
         <gantt-workspace></gantt-workspace>
     </div>
 </div>
+<gantt-task-form *ngIf='show_modal' [editData]='edit_task_data'></gantt-task-form>

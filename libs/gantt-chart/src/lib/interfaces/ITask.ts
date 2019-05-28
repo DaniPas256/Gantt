@@ -15,7 +15,7 @@ function getRandomArbitrary(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-const generateTask = (id: number = 0, parent: number = 0) => {
+export const generateTask = (id: number = 0, parent: number = 0) => {
     return {
         id: id || Math.floor(Math.random() * 100),
         name: 'Name - ' + Math.floor(Math.random() * 100),
@@ -29,4 +29,16 @@ const generateTask = (id: number = 0, parent: number = 0) => {
     } as ITask
 }
 
-export default generateTask;
+export const emptyTask = (id: number = 0, parent: number = 0) => {
+    return {
+        id: id || Math.floor(Math.random() * 100),
+        name: '',
+        description: '',
+        budget: 0,
+        status: 'S',
+        parent,
+        start_date: '',
+        end_date: '',
+        progress: 0
+    } as ITask
+}

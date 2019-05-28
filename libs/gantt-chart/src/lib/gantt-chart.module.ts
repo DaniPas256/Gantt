@@ -6,14 +6,17 @@ import { GanttService } from './services/gantt-service.service';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import { WorkspaceComponent } from './components/workspace/workspace.component';
 import { MoneyPipe } from './pipes/money.pipe';
+import { SafeHtml } from './pipes/safeHtml.pipe';
 import { DraggableDirective } from './directives/Draggable.directive';
 import { ResizableDirective } from './directives/Resizable.directive';
 import { ProgressDragDirective } from './directives/ProgressDrag.directive';
+import { TaskFormComponent } from './components/task-form/task-form.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  imports: [CommonModule],
-  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe, ProgressDragDirective],
-  providers: [GanttService, MoneyPipe],
+  imports: [CommonModule, FormsModule],
+  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe, ProgressDragDirective, SafeHtml, TaskFormComponent],
+  providers: [GanttService, MoneyPipe, SafeHtml],
   exports: [EntryComponent]
 })
 export class GanttChartModule { }

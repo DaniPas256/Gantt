@@ -3,7 +3,7 @@ import { CurrencyPipe } from '@angular/common';
 import { columns } from './../config/task-list-columns';
 import * as moment from 'moment';
 import { MoneyPipe } from '../pipes/money.pipe';
-import generateTask, { ITask } from '../interfaces/ITask';
+import { ITask, generateTask, emptyTask } from '../interfaces/ITask';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,8 @@ export class GanttService {
 
   public tasks: Array<ITask> = [generateTask(1, 0), generateTask(2, 0), generateTask(3, 2), generateTask(4, 3)];
   public tasks_object: any;
-
+  public show_modal = false;
+  public edit_task = emptyTask();
   // , generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask()
 
   public config = {
@@ -131,6 +132,29 @@ export class GanttService {
     })
   }
 
+  public findAllChildren(task: ITask) {
+    const children = new Set([task.id]);
+    const skip_children = new Set();
+
+    children.forEach(key => {
+      let task: ITask | boolean = true;
+      while (task !== undefined) {
+        task = this.tasks.find(
+          item => item.parent === key && !skip_children.has(item.id)
+        );
+        const parent = this.tasks_object[key] || undefined;
+
+        if (task === undefined) {
+          continue;
+        }
+        children.add(task.id);
+        skip_children.add(task.id);
+      }
+    });
+
+    return Array.from(children).reverse();
+  }
+
   public getTaskParents(task, accumulator = []) {
     if (task.parent && this.tasks_object[task.parent] !== undefined) {
       accumulator.push(task.parent);
@@ -146,5 +170,14 @@ export class GanttService {
 
   public isTaskVisible(task) {
     return task.props.parents.every(task_id => this.tasks_object[task_id].props.expanded);
+  }
+
+  public showCreateTask(task: ITask | null = null) {
+    this.edit_task = task ? task : emptyTask();
+    this.show_modal = true;
+  }
+
+  public hideModal() {
+    this.show_modal = false;
   }
 }

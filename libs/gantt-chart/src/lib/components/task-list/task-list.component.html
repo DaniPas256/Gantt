@@ -3,6 +3,9 @@
   <ng-container *ngFor='let column of config.columns'>
     <div class="column" [style.width]='column.width + "px"' *ngIf='column.visible'>
       {{ column.header }}
+      <div class="top_action__holder">
+        <i (click)='addTask()' class="fa fa-plus task-icon" aria-hidden="true" *ngIf='column.actions'></i>
+      </div>
     </div>
   </ng-container>
 </div>
@@ -14,10 +17,16 @@
       <ng-container *ngFor='let column of config.columns'>
         <div class="task__column--task" [ngStyle]='{ "height.px": config.row_height, "width.px": column.width }'
           *ngIf='column.visible'>
-          <span class="overflow__text"
+          <span class="overflow__text {{ column.classes() }}"
             [ngStyle]='{"margin-left.px": column.indent ? task.props.$depth*10 : 0, "cursor": column.click_event === undefined ? "auto" : "pointer" }'
             (click)='column.click_event === undefined ? false : column.click_event( task )'
-            [innerHTML]='column.template( task )'></span>
+            [innerHTML]='column.template( task )' *ngIf='!column.actions'></span>
+
+          <div class='actions__holder' *ngIf='column.actions'>
+            <i (click)='addTask( task )' class="fa fa-plus task-icon" aria-hidden="true"></i>
+            <i (click)='editTask( task )' class="fa fa-pencil task-icon" aria-hidden="true"></i>
+            <i (click)='deleteTask( task )' class="fa fa-trash task-icon" aria-hidden="true"></i>
+          </div>
         </div>
       </ng-container>
     </div>

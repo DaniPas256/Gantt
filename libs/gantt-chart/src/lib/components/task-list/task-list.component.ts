@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GanttService } from './../../services/gantt-service.service';
+import { ITask, emptyTask } from '../../interfaces/ITask';
 
 @Component({
   selector: 'gantt-task-list',
@@ -12,6 +13,10 @@ export class TaskListComponent implements OnInit {
 
   public get tasks() {
     return this.ganttService.tasks;
+  }
+
+  public get tasks_object() {
+    return this.ganttService.tasks_object;
   }
 
   public get config() {
@@ -28,6 +33,30 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.config);
+  }
+
+  addTask(task: ITask | null = null) {
+    const task_e = emptyTask();
+    if (task)
+      task_e.parent = task.id;
+
+    this.ganttService.showCreateTask(task_e);
+  }
+
+  editTask(task: ITask) {
+    this.ganttService.showCreateTask(task);
+  }
+
+  deleteTask(task: ITask) {
+    const confirm_answer = confirm(`Delete task ${task.name}?`);
+
+    if (confirm_answer) {
+      this.ganttService.findAllChildren(task).forEach(task_id => {
+        const task_ix = this.tasks.findIndex(item => item.id === task_id);
+        this.tasks.splice(task_ix, 1);
+        delete this.tasks_object[task.id];
+      })
+    }
   }
 
 }

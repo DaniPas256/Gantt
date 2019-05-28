@@ -136,4 +136,5 @@ export class WorkspaceComponent implements OnInit {
 
     task.props.progress_drag = 0;
   }
+
 }

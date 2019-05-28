@@ -14,6 +14,14 @@ export class EntryComponent implements OnInit {
     return this.ganttService.config.task_list.width();
   }
 
+  public get edit_task_data() {
+    return this.ganttService.edit_task;
+  }
+
+  public get show_modal() {
+    return this.ganttService.show_modal;
+  }
+
   ngOnInit() {
     console.log();
   }
