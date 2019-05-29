@@ -22,8 +22,14 @@
             "main": "apps/gantt/src/main.ts",
             "polyfills": "apps/gantt/src/polyfills.ts",
             "tsConfig": "apps/gantt/tsconfig.app.json",
-            "assets": ["apps/gantt/src/favicon.ico", "apps/gantt/src/assets"],
-            "styles": ["apps/gantt/src/styles.scss"],
+            "assets": [
+              "apps/gantt/src/favicon.ico",
+              "apps/gantt/src/assets"
+            ],
+            "styles": [
+              "apps/gantt/src/styles.scss",
+              "node_modules/pikaday/css/pikaday.css"
+            ],
             "scripts": [],
             "es5BrowserSupport": true
           },
@@ -78,7 +84,9 @@
               "apps/gantt/tsconfig.app.json",
               "apps/gantt/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {
@@ -108,7 +116,9 @@
               "libs/gantt-chart/tsconfig.lib.json",
               "libs/gantt-chart/tsconfig.spec.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "test": {

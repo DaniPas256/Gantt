@@ -11,6 +11,8 @@ import { GanttService } from './../../services/gantt-service.service';
 })
 export class TaskFormComponent implements OnInit, AfterViewInit {
   public viewInit = false;
+  public validation_error = false;
+
   @Input() editData: ITask;
 
   constructor(public ganttService: GanttService) { }
@@ -25,14 +27,19 @@ export class TaskFormComponent implements OnInit, AfterViewInit {
     }, 0);
   }
 
-  closeModal() {
+  closeModal(payload = null) {
     this.viewInit = false;
     setTimeout(() => {
-      this.ganttService.hideModal();
+      this.ganttService.hideModal(payload);
     }, 500);
   }
 
-  onSubmit(form) {
+  onSubmit() {
+    if (!this.editData.name.length || !this.editData.start_date.length || !this.editData.end_date.length) {
+      this.validation_error = true;
+      return false;
+    }
 
+    this.closeModal(this.editData);
   }
 }

@@ -59,8 +59,11 @@ export class GanttService {
   public calc_tasks_details() {
     this.tasks_object = {};
     this.tasks.forEach(item => this.tasks_object[item.id] = item);
+
+    this.tasks.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
     this.tasks.map(item => this.task_details(item));
     this.generateAdditionalTaskProperty();
+    this.sortTasks();
   }
 
   public task_details(task: ITask) {
@@ -99,10 +102,12 @@ export class GanttService {
       task.props.resize_left = 0;
       task.props.resize_right = 0;
       task.props.day_size = this.day_size;
+      task.props.parents = this.getTaskParents(task) || [];
+      task.props.has_children = this.tasks.find(item => item.parent == task.id) !== undefined
     }
   }
 
-  generateAdditionalTaskProperty() {
+  public generateAdditionalTaskProperty() {
     const points_to_search = new Set([0]);
     const skip_children = new Set();
     let counter = 1;
@@ -177,7 +182,55 @@ export class GanttService {
     this.show_modal = true;
   }
 
-  public hideModal() {
+  public hideModal(task = null) {
     this.show_modal = false;
+    if (task) {
+      if (task.props === undefined) {
+        this.tasks.push(task);
+        this.tasks_object[task.id] = task;
+        if (task.parent) {
+          this.tasks_object[task.parent].props.expanded = true;
+        }
+      } else {
+        delete task.props;
+        Object.keys(task).forEach(keyName => {
+          this.tasks_object[task.id][keyName] = task[keyName];
+        })
+      }
+      this.calc_tasks_details();
+    }
+  }
+
+  public sortTasks() {
+    const sortWBSNumbers = (numbers) => {
+      return numbers.map(function (e) {
+        return e.split('.').map(function (e) {
+          return parseInt(e)
+        })
+      }).sort(function (a, b) {
+        for (let i = 0; i < Math.max(a.length, b.length); i++) {
+          if (!a[i]) return -1;
+          if (!b[i]) return 1;
+          if (a[i] - b[i] != 0) return a[i] - b[i];
+        }
+        return 0;
+      }).map(function (e) {
+        return e.join('.')
+      });
+    }
+
+    const WBS_assoc = {};
+
+    this.tasks.forEach((item: ITask) => {
+      WBS_assoc[item.props.$number] = item.id;
+    })
+
+    sortWBSNumbers(Object.keys(WBS_assoc)).forEach((wbs, index) => {
+      this.tasks_object[WBS_assoc[wbs]].props.order = index;
+    });
+
+    this.tasks.sort((task_a: ITask, task_b: ITask) => {
+      return (task_a.props.order > task_b.props.order) ? 1 : ((task_b.props.order > task_a.props.order) ? -1 : 0)
+    });
   }
 }
