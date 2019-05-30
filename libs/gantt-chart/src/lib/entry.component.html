@@ -1,13 +1,24 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<i class="fa fa-paper"></i>
-<div id='gantt1' class="gantt__chart" style="display: flex;height: 500px">
+<div id='gantt1' class="gantt__chart">
     <div class="gantt_menu" [style.width]='task_list_width + "px"'>
         <gantt-task-list></gantt-task-list>
     </div>
-    <div class="gantt_body" [style.width]="'calc( 100% - '+task_list_width+'px )'">
+    <div class="gantt_body" [style.width]="'calc( 100% - '+(task_list_width+20) +'px )'"
+        [scrollLeft]="ganttService.scroll.scrollLeft">
         <gantt-timeline></gantt-timeline>
         <gantt-workspace></gantt-workspace>
+    </div>
+    <div ganttTrackScroll [scroll]='"scrollLeft"' [target]='".gantt_body"' class="gantt-scroll-horizontal"
+        [ngStyle]='{ "transform": "translateX( "+task_list_width+"px )", "width": "calc( 100% - "+(task_list_width+20)+"px )" }'>
+        <div class="" [ngStyle]='{"width.px": day_size * timeline_config.number_of_days}'></div>
+    </div>
+    <div ganttTrackScroll [scroll]='"scrollTop"' [target]='".column__values, .workspace__container"'
+        class="gantt-scroll-vertical" [ngStyle]="{
+            'height.px': task_list_config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales),
+            'transform': 'translateY('+timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales+'px)'
+        }">
+        <div [ngStyle]='{"height.px": task_list_config.row_height * visible_tasks }'></div>
     </div>
 </div>
 <gantt-task-form *ngIf='show_modal' [editData]='edit_task_data'></gantt-task-form>

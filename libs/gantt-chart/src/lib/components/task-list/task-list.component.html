@@ -10,7 +10,7 @@
   </ng-container>
 </div>
 
-<div class="column__values"
+<div class="column__values" [scrollTop]="ganttService.scroll.scrollTop"
   [style.height]=' config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales) + "px" '>
   <ng-container *ngFor='let task of tasks'>
     <div class="task__columns" *ngIf='isTaskVisible( task )'>

@@ -30,7 +30,7 @@
 }
 
 .column__values {
-  overflow-x: auto;
+  overflow: hidden;
   box-shadow: 1px 0px $border-color, -1px 0px $border-color, 0 1px $border-color;
   .task__columns {
     display: flex;

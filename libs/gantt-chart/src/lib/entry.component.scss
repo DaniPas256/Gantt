@@ -1,0 +1,28 @@
+@import "./components/main.style.scss";
+
+.gantt_body {
+  overflow: hidden;
+  box-shadow: 1px -1px $border-color, 0px 1px $border-color;
+}
+
+.gantt__chart {
+  display: flex;
+  height: 500px;
+  position: relative;
+}
+
+.gantt-scroll-horizontal {
+  position: absolute;
+  bottom: -20px;
+  overflow-x: auto;
+  div {
+    height: 1px;
+  }
+}
+
+.gantt-scroll-vertical {
+  position: absolute;
+  right: 0;
+  overflow-y: auto;
+  width: 20px;
+}

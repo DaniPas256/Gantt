@@ -1,4 +1,4 @@
-<div class="workspace__container"
+<div class="workspace__container" [scrollTop]="ganttService.scroll.scrollTop"
   [ngStyle]="{ 'height.px': task_list_config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales), 'width.px': day * timeline_config.number_of_days }">
 
   <ng-container *ngFor='let task of tasks'>
@@ -27,6 +27,6 @@
   </ng-container>
 </div>
 
-<pre>
+<pre *ngIf='false'>
   {{ tasks | json }}
 </pre>

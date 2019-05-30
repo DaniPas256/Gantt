@@ -13,10 +13,11 @@ import { ProgressDragDirective } from './directives/ProgressDrag.directive';
 import { TaskFormComponent } from './components/task-form/task-form.component';
 import { FormsModule } from '@angular/forms';
 import { DatepickerDirective } from './directives/datepicker.directive';
+import { TrackScrollDirective } from './directives/track-scroll.directive';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
-  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe, ProgressDragDirective, SafeHtml, TaskFormComponent, DatepickerDirective],
+  declarations: [EntryComponent, TimelineComponent, TaskListComponent, WorkspaceComponent, DraggableDirective, ResizableDirective, MoneyPipe, ProgressDragDirective, SafeHtml, TaskFormComponent, DatepickerDirective, TrackScrollDirective],
   providers: [GanttService, MoneyPipe, SafeHtml],
   exports: [EntryComponent]
 })

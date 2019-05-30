@@ -31,7 +31,7 @@ export const generateTask = (id: number = 0, parent: number = 0) => {
 
 export const emptyTask = (id: number = 0, parent: number = 0) => {
     return {
-        id: id || Math.floor(Math.random() * 100),
+        id: id || Math.floor(Math.random() * 10000000),
         name: '',
         description: '',
         budget: 0,

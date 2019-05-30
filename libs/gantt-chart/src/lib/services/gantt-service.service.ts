@@ -10,16 +10,19 @@ import { ITask, generateTask, emptyTask } from '../interfaces/ITask';
 })
 export class GanttService {
   private chart_start_date = '2019-05-01';
-  private chart_end_date = '2019-05-31';
+  private chart_end_date = '2019-08-31';
   private day_size = 40;
+
+  public visible_tasks = 0;
 
   constructor(private currencyPipe: MoneyPipe) { }
 
-  public tasks: Array<ITask> = [generateTask(1, 0), generateTask(2, 0), generateTask(3, 2), generateTask(4, 3)];
+  public tasks: Array<ITask> = [];
   public tasks_object: any;
   public show_modal = false;
   public edit_task = emptyTask();
-  // , generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask(), generateTask()
+
+  public scroll = { scrollTop: 0, scrollLeft: 0 };
 
   public config = {
     timeline: {
@@ -232,5 +235,9 @@ export class GanttService {
     this.tasks.sort((task_a: ITask, task_b: ITask) => {
       return (task_a.props.order > task_b.props.order) ? 1 : ((task_b.props.order > task_a.props.order) ? -1 : 0)
     });
+  }
+
+  calc_visible_tasks() {
+    return Object.keys(this.tasks_object).filter((task_id) => this.isTaskVisible(this.tasks_object[task_id])).length;
   }
 }
