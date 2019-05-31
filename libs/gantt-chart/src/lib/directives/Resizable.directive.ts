@@ -20,6 +20,7 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
   private offset = { x: 0, y: 0 };
 
   private destroy$ = new Subject<void>();
+  private ngDestroy$ = new Subject<void>();
 
   constructor(private elementRef: ElementRef, private zone: NgZone) {
   }
@@ -27,11 +28,18 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
     this.handle = this.resizeHandle ? document.querySelector(this.resizeHandle) as HTMLElement : this.elementRef.nativeElement;
     this.target = this.resizeTarget ? document.querySelector(this.resizeTarget) as HTMLElement : this.elementRef.nativeElement;
-    this.setupEvents();
+
+    let click_down$ = fromEvent(this.handle, 'mouseenter').pipe( takeUntil(this.ngDestroy$) ).subscribe( () => {
+      this.setupEvents();
+
+      let click_up$ = fromEvent( document, 'mouseup').pipe( takeUntil(this.destroy$) ).subscribe( () => {
+        this.destroy$.next();
+      });
+    });
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.complete();
+    this.ngDestroy$.next();
   }
 
   private setupEvents() {
@@ -63,6 +71,7 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
+      console.log('UP');
       if (this.delta.x != 0) {
         this.endResize.emit({ task_id: this.task.id, edge: this.edge });
       }

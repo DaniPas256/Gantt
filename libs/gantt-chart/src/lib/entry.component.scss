@@ -1,8 +1,11 @@
 @import "./components/main.style.scss";
 
 .gantt_body {
-  overflow: hidden;
+  overflow: auto;
+  overflow-y: hidden;
   box-shadow: 1px -1px $border-color, 0px 1px $border-color;
+  height: 100%;
+  padding-bottom: 20px;
 }
 
 .gantt__chart {

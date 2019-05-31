@@ -21,6 +21,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
   private offset = { x: 0, y: 0 };
 
   private destroy$ = new Subject<void>();
+  private ngDestroy$ = new Subject<void>();
 
   constructor(private elementRef: ElementRef, private zone: NgZone) {
   }
@@ -28,11 +29,17 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
     this.handle = this.dragHandle ? document.querySelector(this.dragHandle) as HTMLElement : this.elementRef.nativeElement;
     this.target = this.dragTarget ? document.querySelector(this.dragTarget) as HTMLElement : this.elementRef.nativeElement;
-    this.setupEvents();
+
+    let click_down$ = fromEvent(this.handle, 'mouseenter').pipe( takeUntil(this.ngDestroy$) ).subscribe( () => {
+      this.setupEvents();
+      let click_up$ = fromEvent(this.handle, 'mouseup').pipe( takeUntil(this.destroy$) ).subscribe( () => {
+        this.destroy$.next();
+      });
+    });
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.complete();
+    this.ngDestroy$.next();
   }
 
   private setupEvents() {
@@ -52,7 +59,6 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
             y: event.clientY - startY
           };
         }), takeUntil(mouseup$))
-
     }), takeUntil(this.destroy$));
 
     mousedrag$.subscribe(() => {
@@ -70,6 +76,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
       this.offset.x += this.delta.x;
       this.offset.y += this.delta.y;
       this.delta = { x: 0, y: 0 };
+      mouseup$
     });
   }
 

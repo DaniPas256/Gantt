@@ -41,8 +41,8 @@ export class EntryComponent implements OnInit {
   }
 
   ngOnInit() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
       this.ganttService.tasks.push(generateTask(i));
     }
   }
-} 
+}

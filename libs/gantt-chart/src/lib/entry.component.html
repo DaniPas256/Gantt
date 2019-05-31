@@ -1,18 +1,18 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<div id='gantt1' class="gantt__chart">
+<div id='gantt1' class="gantt__chart" [style.height]='task_list_config.height+"px"'>
     <div class="gantt_menu" [style.width]='task_list_width + "px"'>
         <gantt-task-list></gantt-task-list>
     </div>
-    <div class="gantt_body" [style.width]="'calc( 100% - '+(task_list_width+20) +'px )'"
-        [scrollLeft]="ganttService.scroll.scrollLeft">
+    <div class="gantt_body" [style.width]="'calc( 100% - '+(task_list_width+20) +'px )'">
         <gantt-timeline></gantt-timeline>
         <gantt-workspace></gantt-workspace>
     </div>
-    <div ganttTrackScroll [scroll]='"scrollLeft"' [target]='".gantt_body"' class="gantt-scroll-horizontal"
+    <!-- <div ganttTrackScroll [scroll]='"scrollLeft"' [target]='".gantt_body"' class="gantt-scroll-horizontal"
         [ngStyle]='{ "transform": "translateX( "+task_list_width+"px )", "width": "calc( 100% - "+(task_list_width+20)+"px )" }'>
         <div class="" [ngStyle]='{"width.px": day_size * timeline_config.number_of_days}'></div>
     </div>
+     -->
     <div ganttTrackScroll [scroll]='"scrollTop"' [target]='".column__values, .workspace__container"'
         class="gantt-scroll-vertical" [ngStyle]="{
             'height.px': task_list_config.height - (timeline_config.scale_unit_height * timeline_config.number_of_displayed_scales),

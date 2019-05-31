@@ -3,6 +3,10 @@
 .task__row {
   position: relative;
   box-shadow: 0px 1px $border-color;
+  user-select: none;
+  *{
+    user-select: none;
+  }
   .task_bar {
     border-radius: 3px;
     position: absolute;

@@ -42,7 +42,7 @@ export class GanttService {
         return sum;
       },
       row_height: 30,
-      height: 500,
+      height: 800,
       columns: columns
     },
     workspace: {

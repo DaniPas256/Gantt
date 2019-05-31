@@ -12,7 +12,7 @@ export class TrackScrollDirective {
   @HostListener('scroll', ['$event']) private onScroll($event: Event): void {
     requestAnimationFrame(() => {
       const scrollValue = $event.srcElement[this.scroll];
-      this.ganttService.scroll[this.scroll] = scrollValue;
+      this.ganttService.scroll[this.scroll] = Math.ceil(scrollValue) + 1;
     })
   }
 }
