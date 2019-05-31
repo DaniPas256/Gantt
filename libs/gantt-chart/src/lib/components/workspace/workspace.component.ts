@@ -57,7 +57,7 @@ export class WorkspaceComponent implements OnInit {
     const task_offset = drag_offset + left_offset < 0 ? 0 : drag_offset + left_offset;
 
     const task_position = task_offset + resize_offset;
-    const progress_position = task_position + ((this.progressValue(task) / 100) * this.taskWidth(task));
+    const progress_position = ((this.progressValue(task) / 100) * this.taskWidth(task));
 
     return `translate( ${progress_position}px)`;
   }

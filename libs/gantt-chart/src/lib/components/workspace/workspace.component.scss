@@ -10,6 +10,8 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
+    height: 100%;
+    width: 100%;
 
     &.status-started {
       border: 1px solid $task-started-border;
@@ -80,6 +82,7 @@
   cursor: e-resize;
   border-radius: 5px;
   z-index: 10;
+  height: 100%;
 }
 
 .resize_handler--left {
@@ -87,7 +90,7 @@
 }
 
 .resize_handler--right {
-  left: -8px;
+  right: 3px;
 }
 
 .link_handler {
@@ -106,7 +109,7 @@
 }
 
 .link_handler--right {
-  left: 7px;
+  right: -16px;
 }
 
 .progress_handler {
@@ -120,4 +123,6 @@
   border-right: 5px solid transparent;
   border-bottom: 5px solid black;
   cursor: e-resize;
+  z-index: 10;
+  top: 22px;
 }

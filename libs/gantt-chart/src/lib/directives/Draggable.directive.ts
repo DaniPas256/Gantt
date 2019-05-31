@@ -32,7 +32,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private setupEvents() {
