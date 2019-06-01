@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { GanttService } from './../../services/gantt-service.service';
 import { ITask, emptyTask } from '../../interfaces/ITask';
 
 @Component({
   selector: 'gantt-task-list',
   templateUrl: './task-list.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
 
-  constructor(public ganttService: GanttService) { }
+  constructor(public ganttService: GanttService, public cd: ChangeDetectorRef) { }
 
   public get tasks() {
     return this.ganttService.tasks;
@@ -32,7 +33,7 @@ export class TaskListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.config);
+    this.ganttService.task_list_cd = this.cd;
   }
 
   addTask(task: ITask | null = null) {
@@ -55,6 +56,7 @@ export class TaskListComponent implements OnInit {
         const task_ix = this.tasks.findIndex(item => item.id === task_id);
         this.tasks.splice(task_ix, 1);
         delete this.tasks_object[task.id];
+        this.ganttService.dcWorkspace();
       })
     }
   }

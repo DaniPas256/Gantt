@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { GanttService } from './../../services/gantt-service.service';
 import { ITask } from '../../interfaces/ITask';
 import * as moment from 'moment';
@@ -6,13 +6,15 @@ import * as moment from 'moment';
 @Component({
   selector: 'gantt-workspace',
   templateUrl: './workspace.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./workspace.component.scss']
 })
 export class WorkspaceComponent implements OnInit {
 
-  constructor(public ganttService: GanttService) { }
+  constructor(public ganttService: GanttService, public cd: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.ganttService.workspace_cd = this.cd;
     this.ganttService.calc_tasks_details();
   }
 
@@ -69,10 +71,23 @@ export class WorkspaceComponent implements OnInit {
   public taskWidth(task: ITask) {
     const resize_left_offset = Math.floor(task.props.resize_left / this.day) * this.day;
     const resize_right_offset = Math.floor(task.props.resize_right / this.day) * this.day;
-
     const sum = this.taskDuration(task) * this.day - resize_left_offset + resize_right_offset;
     const task_width = sum < this.day ? this.day : sum;
-    return task_width;
+    return task_width < 1 ? 1 : task_width;
+  }
+
+  public taskTextVisible(task: ITask) {
+    const getTextWidth = (text, font = '12px Lato') => {
+      var canvas = document.createElement("canvas");
+      var context = canvas.getContext("2d");
+      context.font = font;
+      var metrics = context.measureText(text);
+      return metrics.width;
+    }
+    const task_text = `${task.name} / ${task.progress}%`;
+    const task_width = this.taskWidth(task);
+
+    return task_width > getTextWidth(task_text) + 10;
   }
 
   public progressValue(task: ITask) {
@@ -103,7 +118,7 @@ export class WorkspaceComponent implements OnInit {
     const sum = task_offset + task_width + resize_right_offset;
     const translate = sum < left_offset + this.day ? left_offset + this.day : sum;
 
-    return `translate( ${translate}px, ${this.config.task_padding_top}px )`;
+    return translate;
   }
 
   public endTaskDrag(payload: { drag: number, task_id: number }) {
@@ -114,6 +129,7 @@ export class WorkspaceComponent implements OnInit {
     task.end_date = moment(task.end_date).add(days, 'days').format('YYYY-MM-DD');
 
     this.ganttService.task_details(task);
+    this.ganttService.reDrawScaleSubject.next();
   }
 
   public endTaskResize(payload: { resize: number, task_id: number, edge: string }) {
@@ -128,6 +144,7 @@ export class WorkspaceComponent implements OnInit {
     }
 
     this.ganttService.task_details(task);
+    this.ganttService.reDrawScaleSubject.next();
   }
 
   public endProgressDrag(payload: { drag: number, task_id: number }) {

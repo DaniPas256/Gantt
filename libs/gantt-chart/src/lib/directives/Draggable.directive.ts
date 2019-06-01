@@ -1,7 +1,8 @@
-import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnDestroy, Output, EventEmitter } from "@angular/core";
+import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnDestroy, Output, EventEmitter, ChangeDetectorRef } from "@angular/core";
 import { Observable, Subject, fromEvent } from "rxjs";
 import { takeUntil, map, switchMap, debounceTime } from 'rxjs/operators';
 import { ITask } from '../interfaces/ITask';
+import { GanttService } from './../services/gantt-service.service';
 
 @Directive({
   selector: '[draggable]'
@@ -18,23 +19,19 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
   // Drag handle
   private handle: HTMLElement;
   private delta = { x: 0, y: 0 };
-  private offset = { x: 0, y: 0 };
 
   private destroy$ = new Subject<void>();
   private ngDestroy$ = new Subject<void>();
 
-  constructor(private elementRef: ElementRef, private zone: NgZone) {
+  constructor(private elementRef: ElementRef, private zone: NgZone, public cd: ChangeDetectorRef, public ganttService: GanttService) {
   }
 
   public ngAfterViewInit(): void {
     this.handle = this.dragHandle ? document.querySelector(this.dragHandle) as HTMLElement : this.elementRef.nativeElement;
     this.target = this.dragTarget ? document.querySelector(this.dragTarget) as HTMLElement : this.elementRef.nativeElement;
 
-    let click_down$ = fromEvent(this.handle, 'mouseenter').pipe( takeUntil(this.ngDestroy$) ).subscribe( () => {
+    this.zone.runOutsideAngular(() => {
       this.setupEvents();
-      let click_up$ = fromEvent(this.handle, 'mouseup').pipe( takeUntil(this.destroy$) ).subscribe( () => {
-        this.destroy$.next();
-      });
     });
   }
 
@@ -50,6 +47,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
     let mousedrag$ = mousedown$.pipe(switchMap((event: MouseEvent) => {
       let startX = event.clientX;
       let startY = event.clientY;
+      this.task.props.isDragged = true;
 
       return mousemove$.pipe(
         map((event: MouseEvent) => {
@@ -72,17 +70,16 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
       if (this.delta.x != 0) {
         this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id });
+        this.task.props.isDragged = false;
       }
-      this.offset.x += this.delta.x;
-      this.offset.y += this.delta.y;
       this.delta = { x: 0, y: 0 };
-      mouseup$
     });
   }
 
   private translate() {
     requestAnimationFrame(() => {
       this.task.props.drag = this.delta.x;
+      this.cd.detectChanges();
     });
   }
 }

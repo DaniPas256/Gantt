@@ -5,19 +5,25 @@
   <ng-container *ngFor='let task of tasks'>
     <ng-container *ngIf='isTaskVisible( task )'>
       <div class="task__row" [ngStyle]='{ "height.px": task_list_config.row_height }'>
-        <div class="task__row_container" [ngStyle]= "{'transform': taskPosition( task ), 'width.px': taskWidth( task ), 'height.px': config.task_height }">
+        <div class="task__row_container"
+          [ngClass]="{'isDragged': task.props.isDragged, 'isResized': task.props.isResized }"
+          [ngStyle]="{'transform': taskPosition( task ), 'width.px': taskWidth( task ), 'height.px': config.task_height }">
 
-            <span resizable (endResize)='endTaskResize($event)' class="resize_handler resize_handler--left" [task]='task' [edge]='"left"'>||</span>
+          <span resizable (endResize)='endTaskResize($event)' class="resize_handler resize_handler--left" [task]='task'
+            [edge]='"left"'>||</span>
 
-            <span resizable (endResize)='endTaskResize($event)' class="resize_handler resize_handler--right" [task]='task' [edge]='"right"'>||</span>
+          <span resizable (endResize)='endTaskResize($event)' class="resize_handler resize_handler--right" [task]='task'
+            [edge]='"right"'>||</span>
 
           <div class="task_bar" [ngClass]="task.props.classes" draggable (endDrag)='endTaskDrag($event)' [task]='task'>
-            <div class="task__progress" [ngStyle]='{ "width.%": progressValue( task ) }'></div>
-            <span class="task_name">{{ task.name }} / {{ progressValue( task ) }}%</span>
+            <div class="task__progress" [ngClass]="{'isProgressed': task.props.isProgressed}"
+              [ngStyle]='{ "width.%": progressValue( task ) }'></div>
+            <span class="task_name" *ngIf='taskTextVisible( task )'>{{ task.name }} /
+              {{ progressValue( task ) }}%</span>
           </div>
 
           <span class="progress_handler" progress-drag (endDrag)='endProgressDrag($event)' [task]='task'
-          [ngStyle]="{ 'transform': progressPosition( task ) }"></span>
+            [ngStyle]="{ 'transform': progressPosition( task ) }"></span>
 
           <span class="link_handler link_handler--left"></span>
           <span class="link_handler link_handler--right"></span>
@@ -26,7 +32,3 @@
     </ng-container>
   </ng-container>
 </div>
-
-<pre *ngIf='false'>
-  {{ tasks | json }}
-</pre>

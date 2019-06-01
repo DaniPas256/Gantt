@@ -1,12 +1,12 @@
 <div class="scale__wrapper" [ngStyle]='{
-  "width.px": this.ganttService.get_day_size * config.number_of_days,
+  "width.px": day_size * config.number_of_days,
   "height.px": config.scale_unit_height *
   config.number_of_displayed_scales
 }'>
   <div class="scale__units">
     <ng-container *ngFor='let scale of keys( scales.years )'>
       <div *ngIf='isScaleVisible("years")' [ngStyle]='{
-        "width.px": this.ganttService.get_day_size * scales.years[scale].number,
+        "width.px": day_size * scales.years[scale].number,
         "height.px": config.scale_unit_height
       }' class="scale__unit">
         {{ scale }}
@@ -16,7 +16,7 @@
   <div class="scale__units">
     <ng-container *ngFor='let scale of keys( scales.quarter )'>
       <div *ngIf='isScaleVisible("quarter")' [ngStyle]='{
-        "width.px": this.ganttService.get_day_size * scales.quarter[scale].number,
+        "width.px": day_size * scales.quarter[scale].number,
         "height.px": config.scale_unit_height
       }' class="scale__unit">
         {{ scales.quarter[scale].name }}
@@ -26,7 +26,7 @@
   <div class="scale__units">
     <ng-container *ngFor='let scale of keys( scales.months )'>
       <div *ngIf='isScaleVisible("months")' [ngStyle]='{
-        "width.px": this.ganttService.get_day_size * scales.months[scale].number,
+        "width.px": day_size * scales.months[scale].number,
         "height.px": config.scale_unit_height
       }' class="scale__unit">
         {{ scales.months[scale].name }}
@@ -36,7 +36,7 @@
   <div class="scale__units">
     <ng-container *ngFor='let scale of keys( scales.weeks )'>
       <div *ngIf='isScaleVisible("weeks")' [ngStyle]='{
-        "width.px": this.ganttService.get_day_size * scales.weeks[scale].number,
+        "width.px": day_size * scales.weeks[scale].number,
         "height.px": config.scale_unit_height
       }' class="scale__unit">
         {{ scales.weeks[scale].name }}
@@ -46,7 +46,7 @@
   <div class="scale__units">
     <ng-container *ngFor='let scale of keys( scales.days )'>
       <div *ngIf='isScaleVisible("days")' [ngStyle]='{
-        "width.px": this.ganttService.get_day_size,
+        "width.px": day_size,
         "height.px": config.scale_unit_height
       }' class="scale__unit" [ngClass]='{"is-weekend": scales.days[scale].weekend }'>
         {{ scales.days[scale].name }}

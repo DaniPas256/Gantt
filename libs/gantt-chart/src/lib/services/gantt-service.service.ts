@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { Injectable, ChangeDetectorRef } from '@angular/core';
 import { columns } from './../config/task-list-columns';
 import * as moment from 'moment';
 import { MoneyPipe } from '../pipes/money.pipe';
 import { ITask, generateTask, emptyTask } from '../interfaces/ITask';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,14 @@ export class GanttService {
 
   public visible_tasks = 0;
 
-  constructor(private currencyPipe: MoneyPipe) { }
+  public task_list_cd = null;
+  public timeline_cd = null;
+  public workspace_cd = null;
 
-  public tasks: Array<ITask> = [];
+  public reDrawScaleSubject: Subject<any> = new Subject<any>();
+  public fitScaleSubject: Subject<any> = new Subject<any>();
+
+  public tasks: Array<ITask> = [generateTask(1), generateTask(2), generateTask(3), generateTask(4, 1), generateTask(5, 4)];
   public tasks_object: any;
   public show_modal = false;
   public edit_task = emptyTask();
@@ -26,9 +31,14 @@ export class GanttService {
 
   public config = {
     timeline: {
+      options: {
+        lock_scale: false,
+        resize_oo: true // Resize only when scale offset is invalid
+      },
       scale_unit_height: 20,
       number_of_displayed_scales: 0,
-      number_of_days: 0
+      number_of_days: 0,
+      timeline_offset: 3
     },
     task_list: {
       width: () => {
@@ -42,21 +52,35 @@ export class GanttService {
         return sum;
       },
       row_height: 30,
-      height: 800,
+      height: 500,
       columns: columns
     },
     workspace: {
       task_height: 20,
-      task_padding_top: 5
+      task_padding_top: 5,
+      width: 0
     }
   };
 
+  constructor(private currencyPipe: MoneyPipe) { }
+
   public get get_day_size() {
-    return this.day_size < 1 ? 1 : this.day_size;
+    return this.day_size;
+  }
+
+  public set set_day_size(new_value) {
+    this.day_size = new_value;
+    this.dcTimeline();
+    this.dcWorkspace();
   }
 
   public get chart_dates() {
     return { start: this.chart_start_date, end: this.chart_end_date };
+  }
+
+  public set chart_dates(new_value) {
+    this.chart_start_date = new_value.start;
+    this.chart_end_date = new_value.end;
   }
 
   public calc_tasks_details() {
@@ -69,6 +93,10 @@ export class GanttService {
     this.sortTasks();
   }
 
+  public dcTimeline() { this.timeline_cd.detectChanges(); }
+  public dcWorkspace() { this.workspace_cd.detectChanges(); }
+  public dcTaskList() { this.task_list_cd.detectChanges(); }
+
   public task_details(task: ITask) {
     const statuses_class = {
       'S': 'status-started',
@@ -80,6 +108,9 @@ export class GanttService {
 
     if (task.props === undefined) {
       task.props = {
+        isDragged: false,
+        isResized: false,
+        isProgressed: false,
         duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
         left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
         is_delayed,
@@ -93,14 +124,22 @@ export class GanttService {
         moneyPipe: this.currencyPipe.transform,
         expanded: false,
         parents: this.getTaskParents(task) || [],
-        has_children: this.tasks.find(item => item.parent == task.id) !== undefined
+        has_children: this.tasks.find(item => item.parent == task.id) !== undefined,
+        refresh: () => {
+          this.dcWorkspace();
+        }
       }
     } else {
+      task.props.isDragged = false;
+      task.props.isResized = false;
+      task.props.isProgressed = false;
+
       task.props.duration = moment(task.end_date).diff(moment(task.start_date), 'day') + 1;
       task.props.left = moment(task.start_date).diff(moment(this.chart_start_date), 'day');
       task.props.drag = 0;
       task.props.is_delayed = is_delayed;
-      task.props.classes = 'draggable ' + statuses_class[task.status] + (is_delayed ? " task_delayed" : "");
+      task.props.classes = 'draggable ' + statuses_class[task.status] + (is_delayed ? " task_delayed" : "")
+        ;
       task.props.progress_drag = 0;
       task.props.resize_left = 0;
       task.props.resize_right = 0;
@@ -202,6 +241,9 @@ export class GanttService {
       }
       this.calc_tasks_details();
     }
+    this.reDrawScaleSubject.next();
+    this.dcTaskList();
+    this.dcWorkspace();
   }
 
   public sortTasks() {

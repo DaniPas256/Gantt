@@ -1,4 +1,7 @@
 import * as moment from 'moment';
+import { ITask } from '../interfaces/ITask';
+import { OnDestroy } from '@angular/core';
+import { ReplaySubject } from 'rxjs';
 
 export class Helpers {
     static generateDates(start, end) {
@@ -205,5 +208,48 @@ export class Helpers {
         }
 
         return dates;
+    }
+
+    public static startingDates(): { start: string, end: string } {
+        const start = moment().startOf('month').format('YYYY-MM-DD');
+        const end = moment().endOf('month').format('YYYY-MM-DD');
+
+        return { start, end };
+    }
+
+    public static findDatesRange(tasks: Array<ITask>, offset = 0) {
+        const starts = [...tasks].map(item => moment(item.start_date));
+        const ends = [...tasks].map(item => moment(item.end_date));
+        const min_start = moment.min(starts);
+        const max_end = moment.max(ends);
+
+        return { start: min_start.add(-1 * offset, 'days').format('YYYY-MM-DD'), end: max_end.add(offset, 'days').format('YYYY-MM-DD') };
+    }
+
+    public static isOffsetIntouched(current_dates: { start: string, end: string }, tasks: Array<ITask>, offset = 0) {
+        const starts = [...tasks].map(item => moment(item.start_date));
+        const ends = [...tasks].map(item => moment(item.end_date));
+        const min_start = moment.min(starts);
+        const max_end = moment.max(ends);
+
+        const current_min = moment(current_dates.start).add(1 * offset, 'days');
+        const current_max = moment(current_dates.end).add(-1 * offset, 'days');
+
+        return min_start.isSameOrAfter(current_min) && max_end.isSameOrBefore(current_max);
+    }
+
+    public static getDiffrence(start, end) {
+        return moment(end).diff(moment(start), 'days') + 1;
+    }
+
+    public static componentDestroyed(component: OnDestroy) {
+        const oldNgOnDestroy = component.ngOnDestroy;
+        const destroyed$ = new ReplaySubject<void>(1);
+        component.ngOnDestroy = () => {
+            oldNgOnDestroy.apply(component);
+            destroyed$.next(undefined);
+            destroyed$.complete();
+        };
+        return destroyed$;
     }
 }

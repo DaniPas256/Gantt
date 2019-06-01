@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Helpers } from './classes/helpers';
 import { GanttService } from './services/gantt-service.service';
 import { generateTask } from './interfaces/ITask';
+import { AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'gantt-entry',
@@ -9,7 +10,9 @@ import { generateTask } from './interfaces/ITask';
   styleUrls: ['./entry.component.scss']
 })
 
-export class EntryComponent implements OnInit {
+export class EntryComponent implements OnInit, AfterViewInit {
+  @ViewChild('ganttBody') ganttBody: ElementRef;
+
   constructor(public ganttService: GanttService) { }
 
   public get task_list_width() {
@@ -41,8 +44,13 @@ export class EntryComponent implements OnInit {
   }
 
   ngOnInit() {
-    for (let i = 0; i < 100; i++) {
-      this.ganttService.tasks.push(generateTask(i));
-    }
+    // this.ganttService.tasks = [];
+    // for (let i = 0; i < 100; i++) {
+    //   this.ganttService.tasks.push(generateTask(i));
+    // }
+  }
+
+  ngAfterViewInit() {
+    this.ganttService.config.workspace.width = this.ganttBody.nativeElement.getBoundingClientRect().width;
   }
 }

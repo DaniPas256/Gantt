@@ -3,7 +3,7 @@
 .gantt_body {
   overflow: auto;
   overflow-y: hidden;
-  box-shadow: 1px -1px $border-color, 0px 1px $border-color;
+  box-shadow: 1px -1px $border-color, 0px -1px $border-color;
   height: 100%;
   padding-bottom: 20px;
 }
@@ -28,4 +28,8 @@
   right: 0;
   overflow-y: auto;
   width: 20px;
+}
+
+.gantt-menu {
+  width: calc(100% - 20px);
 }

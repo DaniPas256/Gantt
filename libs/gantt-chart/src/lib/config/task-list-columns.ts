@@ -29,6 +29,7 @@ export const columns = [
         },
         click_event: (task) => {
             task.props.expanded = !task.props.expanded;
+            task.props.refresh();
         },
         visible: true,
         classes: () => { return '' },
