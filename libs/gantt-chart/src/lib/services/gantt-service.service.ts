@@ -111,6 +111,8 @@ export class GanttService {
         isDragged: false,
         isResized: false,
         isProgressed: false,
+        isLinkDragged: false,
+        linkDraggPosition: { x: 0, y: 0 },
         duration: moment(task.end_date).diff(moment(task.start_date), 'day') + 1,
         left: moment(task.start_date).diff(moment(this.chart_start_date), 'day'),
         is_delayed,
@@ -133,6 +135,8 @@ export class GanttService {
       task.props.isDragged = false;
       task.props.isResized = false;
       task.props.isProgressed = false;
+      task.props.isLinkDragged = false;
+      task.props.linkDraggPosition = { x: 0, y: 0 };
 
       task.props.duration = moment(task.end_date).diff(moment(task.start_date), 'day') + 1;
       task.props.left = moment(task.start_date).diff(moment(this.chart_start_date), 'day');

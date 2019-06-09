@@ -2,6 +2,7 @@
 
 .task__row {
   position: relative;
+  z-index: 5;
   box-shadow: 0px 1px $border-color;
   user-select: none;
   * {
@@ -72,6 +73,7 @@
 .workspace__container {
   box-shadow: 0 1px #d4d4d4, -1px 0 #d4d4d4 inset;
   overflow: hidden;
+  position: relative;
 }
 
 .resize_handler {
@@ -100,10 +102,11 @@
 .link_handler {
   position: absolute;
   height: 10px;
+  background: white;
   width: 10px;
   cursor: pointer;
   border-radius: 50%;
-  z-index: 10;
+  // z-index: 10;
   top: 7px;
   box-shadow: 1px 1px #92929280 inset, -1px -1px #92929280 inset, -1px 1px #92929280 inset, 1px -1px #92929280 inset;
 }
@@ -141,4 +144,37 @@
 
 .isProgressed {
   will-change: transform;
+}
+
+.link__connection,
+.link__wrapper {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  svg {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.link__connection {
+  z-index: 10;
+}
+
+.arrowhead {
+  position: absolute;
+  pointer-events: none;
+  * {
+    position: relative;
+    z-index: 20;
+  }
 }

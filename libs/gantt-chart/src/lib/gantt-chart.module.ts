@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { DatepickerDirective } from './directives/datepicker.directive';
 import { TrackScrollDirective } from './directives/track-scroll.directive';
 import { MenuComponent } from './components/menu/menu.component';
+import { LinkDragDirective } from './directives/link-drag.directive';
 
 const components = [
   EntryComponent,
@@ -30,7 +31,8 @@ const directives = [
   ResizableDirective,
   DatepickerDirective,
   TrackScrollDirective,
-  ProgressDragDirective
+  ProgressDragDirective,
+  LinkDragDirective
 ]
 
 const pipes = [

@@ -8,6 +8,7 @@ export interface ITask {
     end_date: string,
     parent: number,
     progress: number,
+    relations: Array<{ target_id: number, type: string }>,
     props?: any
 }
 
@@ -25,6 +26,7 @@ export const generateTask = (id: number = 0, parent: number = 0) => {
         parent,
         start_date: '2019-05-0' + getRandomArbitrary(1, 9),
         end_date: '2019-05-' + getRandomArbitrary(10, 31),
+        relations: [],
         progress: getRandomArbitrary(0, 100)
     } as ITask
 }
@@ -39,6 +41,7 @@ export const emptyTask = (id: number = 0, parent: number = 0) => {
         parent,
         start_date: '',
         end_date: '',
+        relations: [],
         progress: 0
     } as ITask
 }
