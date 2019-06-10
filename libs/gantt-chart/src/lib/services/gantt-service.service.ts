@@ -21,6 +21,8 @@ export class GanttService {
 
   public reDrawScaleSubject: Subject<any> = new Subject<any>();
   public fitScaleSubject: Subject<any> = new Subject<any>();
+  public zoomScaleSubject: Subject<string> = new Subject<string>();
+  public excolScaleSubject: Subject<string> = new Subject<string>();
 
   public tasks: Array<ITask> = [generateTask(1), generateTask(2), generateTask(3), generateTask(4, 1), generateTask(5, 4)];
   public tasks_object: any;

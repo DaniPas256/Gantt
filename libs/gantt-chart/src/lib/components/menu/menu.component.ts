@@ -35,4 +35,21 @@ export class MenuComponent implements OnInit, AfterViewInit {
   fitTimeline() {
     this.ganttService.fitScaleSubject.next();
   }
+
+  zoomOut() {
+    this.ganttService.zoomScaleSubject.next('out');
+  }
+
+  zoomIn() {
+    this.ganttService.zoomScaleSubject.next('in');
+  }
+
+  expand() {
+    this.ganttService.excolScaleSubject.next('expand');
+  }
+
+  collapse() {
+    this.ganttService.excolScaleSubject.next('collapse');
+  }
+
 }

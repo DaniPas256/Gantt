@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestro
 import { Helpers } from './../../classes/helpers';
 import { GanttService } from './../../services/gantt-service.service';
 import { takeUntil } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { ITask } from './../../interfaces/ITask';
 
 @Component({
   selector: 'gantt-timeline',
@@ -12,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 export class TimelineComponent implements OnInit, OnDestroy {
   constructor(public ganttService: GanttService, public cd: ChangeDetectorRef) { }
 
+  public subjectSubscription: Subscription = new Subscription();
   public scales = null;
   public number_of_displayed_scales = 0;
   public keys = Object.keys;
@@ -28,6 +31,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return this.ganttService.config.workspace;
   }
 
+  public get tasks() {
+    return this.ganttService.tasks;
+  }
+
   ngOnInit() {
     this.ganttService.chart_dates = this.ganttService.tasks.length ? Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset) : Helpers.startingDates();
     this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
@@ -37,20 +44,53 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.ganttService.timeline_cd = this.cd;
 
-    this.ganttService.reDrawScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((payload) => {
-      this.reDrawScale(payload);
-      this.ganttService.calc_tasks_details();
-      this.ganttService.dcTimeline();
-      this.ganttService.dcTaskList();
-      this.ganttService.dcWorkspace();
-    });
+    this.subjectSubscription.add(
+      this.ganttService.reDrawScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((payload) => {
+        this.reDrawScale(payload);
+        this.ganttService.calc_tasks_details();
+        this.ganttService.dcTimeline();
+        this.ganttService.dcTaskList();
+        this.ganttService.dcWorkspace();
+      })
+    )
 
-    this.ganttService.fitScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((payload) => {
-      this.fitToTasks();
-      this.ganttService.dcTimeline();
-      this.ganttService.dcTaskList();
-      this.ganttService.dcWorkspace();
-    });
+    this.subjectSubscription.add(
+      this.ganttService.fitScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((payload) => {
+        this.fitToTasks();
+        this.ganttService.dcTimeline();
+        this.ganttService.dcTaskList();
+        this.ganttService.dcWorkspace();
+      })
+    )
+
+    this.subjectSubscription.add(
+      this.ganttService.zoomScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((action: string) => {
+        const old_value = this.day_size;
+        let new_value = 0;
+
+        if (action === 'out') {
+          new_value = old_value - old_value / 10
+        }
+
+        if (action === 'in') {
+          new_value = old_value + old_value / 10;
+        }
+
+        new_value = Math.floor(new_value * 100) / 100;
+        this.setZoom(new_value);
+        this.ganttService.dcTimeline();
+        this.ganttService.dcTaskList();
+        this.ganttService.dcWorkspace();
+      })
+    )
+
+    this.subjectSubscription.add(
+      this.ganttService.excolScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((action: string) => {
+        this.setVisible(action == 'expand');
+        this.ganttService.dcTaskList();
+        this.ganttService.dcWorkspace();
+      })
+    )
   }
 
   isScaleVisible(scale_name) {
@@ -94,12 +134,21 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
     this.config.number_of_displayed_scales = Object.keys(this.scales).filter(name => this.isScaleVisible(name)).length - 1;
     this.config.number_of_days = this.scales.totalNoD;
+  }
 
-    console.log(new_day_size);
-    console.log(diff);
+  setZoom(new_value) {
+    this.ganttService.set_day_size = new_value;
+    this.config.number_of_displayed_scales = Object.keys(this.scales).filter(name => this.isScaleVisible(name)).length - 1;
+    this.config.number_of_days = this.scales.totalNoD;
+  }
+
+  setVisible(new_value) {
+    this.tasks.forEach((task: ITask) => {
+      task.props.expanded = new_value;
+    });
   }
 
   ngOnDestroy() {
-
+    this.subjectSubscription.unsubscribe();
   }
 }

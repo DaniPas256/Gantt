@@ -40,9 +40,11 @@ const pipes = [
   SafeHtml
 ];
 
+const declarations = [...components, ...directives, ...pipes];
+
 @NgModule({
   imports: [CommonModule, FormsModule],
-  declarations: [].concat(components, directives, pipes),
+  declarations,
   providers: [GanttService, MoneyPipe, SafeHtml],
   exports: [EntryComponent]
 })

@@ -18,6 +18,9 @@ nav {
       flex-flow: column;
       padding: 20px;
       cursor: pointer;
+      &.pressed {
+        box-shadow: 0 1px 4px 0px #5d5d5d73 inset;
+      }
       i {
         font-size: 20px;
         display: flex;
