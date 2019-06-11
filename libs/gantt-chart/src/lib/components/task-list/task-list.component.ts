@@ -53,12 +53,30 @@ export class TaskListComponent implements OnInit {
 
     if (confirm_answer) {
       this.ganttService.findAllChildren(task).forEach(task_id => {
+        this.removeTaskRelation(this.tasks_object[task.id]);
+      });
+
+      this.ganttService.findAllChildren(task).forEach(task_id => {
         const task_ix = this.tasks.findIndex(item => item.id === task_id);
         this.tasks.splice(task_ix, 1);
         delete this.tasks_object[task.id];
-        this.ganttService.dcWorkspace();
-      })
+      });
+      this.ganttService.calc_tasks_details();
+      this.ganttService.dcTaskList();
+      this.ganttService.dcWorkspace();
     }
+  }
+
+  removeTaskRelation(task: ITask) {
+    this.tasks.forEach((task_loop: ITask) => {
+      let delete_indexes = [];
+      task_loop.relations.forEach((relation, ix) => {
+        if (relation.target_id == task.id) delete_indexes.push(ix);
+      });
+      delete_indexes.forEach(ix => {
+        task_loop.relations.splice(ix, 1);
+      });
+    });
   }
 
 }

@@ -57,6 +57,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.subjectSubscription.add(
       this.ganttService.fitScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((payload) => {
         this.fitToTasks();
+        this.ganttService.calc_tasks_details();
         this.ganttService.dcTimeline();
         this.ganttService.dcTaskList();
         this.ganttService.dcWorkspace();
@@ -128,6 +129,10 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   fitToTasks() {
     const dates = Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset);
+    this.ganttService.chart_dates = dates;
+    console.log(dates);
+    this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
+
     const diff = Helpers.getDiffrence(dates.start, dates.end);
     const new_day_size = Math.floor((this.workspace_config.width / diff) * 100) / 100;
     this.ganttService.set_day_size = new_day_size;

@@ -50,6 +50,8 @@ export class WorkspaceComponent implements OnInit {
     return this.ganttService.calc_visible_tasks();
   }
 
+  public keys = Object.keys;
+
   public taskPosition(task: ITask, asNumber = false) {
     const drag_offset = Math.floor(task.props.drag / this.day) * this.day;
     const resize_offset = Math.floor(task.props.resize_left / this.day) * this.day;
@@ -114,6 +116,16 @@ export class WorkspaceComponent implements OnInit {
 
   public taskDuration(task: ITask) {
     return moment(task.end_date).diff(moment(task.start_date), 'day') + 1
+  }
+
+  public deleteRelation(task: ITask, index: number) {
+    const source_name = task.name;
+    const target_name = this.tasks_object[task.relations[index].target_id].name;
+
+    if (confirm(`Delete relation between task ${source_name} and ${target_name}?`)) {
+      task.relations.splice(index, 1);
+      this.ganttService.dcWorkspace();
+    }
   }
 
   public taskRightEdge(task) {
@@ -219,13 +231,49 @@ export class WorkspaceComponent implements OnInit {
   }
 
   public getTaskLines(task: ITask) {
-    const lines = [];
-    task.relations.forEach(item => {
+    const lines = {};
+    task.relations.forEach((item, ix) => {
       if (this.isTaskVisible(this.tasks_object[Number(item.target_id)]))
-        lines.push(this.createRelationLine(task.id, Number(item.target_id), item.type));
+        lines[ix] = (this.createRelationLine(task.id, Number(item.target_id), item.type));
     });
 
-    return lines.filter(item => item);
+    return lines;
+  }
+
+  public generateTaskPolyline(task: ITask) {
+    const points = [];
+    task.relations.forEach(item => {
+      if (this.isTaskVisible(this.tasks_object[Number(item.target_id)])) {
+        const point = [];
+        const line = this.createRelationLine(task.id, Number(item.target_id), item.type);
+        line.forEach((coords, ix) => {
+          if (!ix) point.push(`${coords.x1} ${coords.y1}`);
+
+          point.push(`${coords.x2} ${coords.y2}`);
+        })
+        points.push(point.join(','));
+      }
+    });
+
+    return points;
+  }
+
+  public generateTaskPathline(task: ITask) {
+    const points = {};
+    task.relations.forEach((item, ix) => {
+      if (this.isTaskVisible(this.tasks_object[Number(item.target_id)])) {
+        const point = [];
+        const line = this.createRelationLine(task.id, Number(item.target_id), item.type);
+        line.forEach((coords, ix) => {
+          if (!ix) point.push(`M${coords.x1} ${coords.y1}`);
+
+          point.push(`L${coords.x2} ${coords.y2}`);
+        })
+        points[ix] = (point.join(','));
+      }
+    });
+
+    return points;
   }
 
   public generateUniq() {

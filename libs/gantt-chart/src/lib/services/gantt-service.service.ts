@@ -222,7 +222,9 @@ export class GanttService {
   }
 
   public isTaskVisible(task) {
-    return task.props.parents.every(task_id => this.tasks_object[task_id].props.expanded);
+    if (task === undefined) return false;
+
+    return task.props.parents.every(task_id => this.tasks_object[task_id] ? this.tasks_object[task_id].props.expanded : false);
   }
 
   public showCreateTask(task: ITask | null = null) {
