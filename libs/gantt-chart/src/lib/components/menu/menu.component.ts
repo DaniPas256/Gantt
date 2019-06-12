@@ -22,6 +22,11 @@ export class MenuComponent implements OnInit, AfterViewInit {
     return this.ganttService.config.timeline;
   }
 
+  public get task_list_config() {
+    return this.ganttService.config.task_list;
+  }
+
+
   lockTimeline() {
     this.timeline_config.options.lock_scale = !this.timeline_config.options.lock_scale;
     this.cd.detectChanges();
@@ -52,4 +57,9 @@ export class MenuComponent implements OnInit, AfterViewInit {
     this.ganttService.excolScaleSubject.next('collapse');
   }
 
+  detectChanges() {
+    setTimeout(() => {
+      this.ganttService.dcTaskList();
+    }, 0);
+  }
 }

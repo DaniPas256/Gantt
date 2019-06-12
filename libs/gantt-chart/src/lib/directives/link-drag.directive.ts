@@ -89,7 +89,7 @@ export class LinkDragDirective {
         target_id = e.target.dataset.id;
       }
 
-      if (this.delta.x != 0) {
+      if (this.delta.x != 0 && this.task.props.permissions.add_link) {
         this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id, edge: this.edge, target: { id: target_id, edge: target_egde } });
         this.task.props.isLinkDragged = false;
       }
@@ -98,9 +98,11 @@ export class LinkDragDirective {
   }
 
   private translate() {
-    requestAnimationFrame(() => {
-      this.task.props.linkDraggPosition = { x: this.delta.x, y: this.delta.y, edge: this.edge, uniq: this.uniqMouseDown };
-      this.cd.detectChanges();
-    });
+    if (this.task.props.permissions.add_link) {
+      requestAnimationFrame(() => {
+        this.task.props.linkDraggPosition = { x: this.delta.x, y: this.delta.y, edge: this.edge, uniq: this.uniqMouseDown };
+        this.cd.detectChanges();
+      });
+    }
   }
 }

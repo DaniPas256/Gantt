@@ -68,7 +68,7 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
-      if (this.delta.x != 0) {
+      if (this.delta.x != 0 && this.task.props.permissions.drag) {
         this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id });
         this.task.props.isDragged = false;
       }
@@ -77,9 +77,11 @@ export class DraggableDirective implements AfterViewInit, OnDestroy {
   }
 
   private translate() {
-    requestAnimationFrame(() => {
-      this.task.props.drag = this.delta.x;
-      this.cd.detectChanges();
-    });
+    if (this.task.props.permissions.drag) {
+      requestAnimationFrame(() => {
+        this.task.props.drag = this.delta.x;
+        this.cd.detectChanges();
+      });
+    }
   }
 }

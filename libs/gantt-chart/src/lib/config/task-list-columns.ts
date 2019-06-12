@@ -22,10 +22,10 @@ export const columns = [
         header: 'Task name',
         width: 250,
         indent: true,
+        delayed: true,
         template: (task: ITask) => {
-            const delayed = `<span class = 'delayed_sign'>⚠</span>`;
             const icon = `${task.props.has_children ? (!task.props.expanded ? `<i class="fa fa-folder-o task-icon" aria-hidden="true"></i>` : `<i class="fa fa-folder-open-o task-icon" aria-hidden="true"></i>`) : `<i class="fa fa-file-o task-icon" aria-hidden="true"></i>`}`;
-            return `<span class = 'expand__tree'></span> ${icon} ${task.name} ${task.props.is_delayed ? delayed : ''} `;
+            return `<span class = 'expand__tree'></span> ${icon} ${task.name}`;
         },
         click_event: (task) => {
             task.props.expanded = !task.props.expanded;
@@ -46,7 +46,7 @@ export const columns = [
         template: (task: ITask) => {
             return moment(task.start_date).format('DD.MM.YYYY');
         },
-        visible: true,
+        visible: false,
         classes: () => { return '' },
         edit: {
             editable: (task: ITask) => { return true },
@@ -61,7 +61,7 @@ export const columns = [
         template: (task: ITask) => {
             return moment(task.end_date).format('DD.MM.YYYY');
         },
-        visible: true,
+        visible: false,
         classes: () => { return '' },
         edit: {
             editable: (task: ITask) => { return true },
@@ -98,7 +98,7 @@ export const columns = [
         template: (task: ITask) => {
             return task.props.moneyPipe(task.budget);
         },
-        visible: true,
+        visible: false,
         classes: () => { return '' },
         edit: {
             editable: (task: ITask) => { return true },

@@ -29,5 +29,19 @@
       <i class="fa fa-chevron-up" aria-hidden="true"></i>
       <span class="icon-description">Collapse all</span>
     </li>
+    <li class="submenu-parent">
+      <i class="fa fa-columns" aria-hidden="true"></i>
+      <span class="icon-description">Columns</span>
+      <ul class="submenu">
+        <ng-container *ngFor='let column of task_list_config.columns'>
+          <li>
+            <label (click)='detectChanges()'>
+              <input type="checkbox" [name]="column.header" [value]=true [(ngModel)]='column.visible'>
+              <span>{{ column.header }}</span>
+            </label>
+          </li>
+        </ng-container>
+      </ul>
+    </li>
   </ul>
 </nav>

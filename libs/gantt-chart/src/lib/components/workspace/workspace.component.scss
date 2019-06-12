@@ -21,7 +21,21 @@
     z-index: 5;
     height: 100%;
     width: 100%;
-
+    border-radius: 10px;
+    &::after {
+      content: " ";
+      height: 40%;
+      background: rgba(25, 51, 64, 0.2);
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      z-index: -1;
+      opacity: 0.85;
+      border-radius: 10px;
+      mix-blend-mode: darken;
+      pointer-events: none;
+      filter: blur(1px);
+    }
     &.status-started {
       border: 1px solid $task-started-border;
       background: $task-started-color;
@@ -63,6 +77,7 @@
       position: absolute;
       left: 0;
       z-index: -1;
+      border-radius: 10px;
     }
     .task_name {
       color: white;
@@ -86,8 +101,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px;
-  top: -1px;
+  font-size: 14px;
+  top: 0px;
   letter-spacing: -2px;
   cursor: e-resize;
   border-radius: 5px;
@@ -96,11 +111,11 @@
 }
 
 .resize_handler--left {
-  left: 3px;
+  left: 6px;
 }
 
 .resize_handler--right {
-  right: 3px;
+  right: 6px;
 }
 
 .link_handler {
@@ -170,6 +185,7 @@
     g,
     path {
       pointer-events: none;
+      stroke: $relation-color;
     }
     .blur {
       pointer-events: all;
@@ -196,4 +212,8 @@
     position: relative;
     z-index: 20;
   }
+}
+
+.tooltip_description {
+  display: none;
 }

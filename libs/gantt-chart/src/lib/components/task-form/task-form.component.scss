@@ -20,9 +20,10 @@
   }
 
   .taskform__content {
+    overflow-y: auto;
     z-index: 110;
     background: $form-color;
-    width: 500px;
+    width: 600px;
     height: 100%;
     position: fixed;
     top: 0;
@@ -77,6 +78,24 @@ form {
     }
 
     margin-bottom: 20px;
+
+    .table {
+      width: 100%;
+      input[type="radio"] {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+      }
+      th,
+      td {
+        vertical-align: middle;
+        text-align: center;
+        padding: 5px;
+      }
+      th {
+        width: calc(100% / 7);
+      }
+    }
   }
 
   .button-group {

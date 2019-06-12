@@ -38,6 +38,55 @@
         <textarea name="description" id="description" [(ngModel)]="editData.description"></textarea>
       </div>
 
+      <div class="form-group" *ngIf='editData.props'>
+        <label for="permissions">Permissions</label>
+        <table class="table">
+          <thead>
+            <th></th>
+            <th>Drag</th>
+            <th>Add link</th>
+            <th>Remove link</th>
+            <th>Resize</th>
+            <th>Delete</th>
+            <th>Progress</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td> <b>No</b> </td>
+              <td><input type='radio' name='permissions[drag]' [value]=false
+                  [(ngModel)]="editData.props.permissions.drag">
+              </td>
+              <td><input type='radio' name='permissions[add_link]' [value]=false
+                  [(ngModel)]="editData.props.permissions.add_link"></td>
+              <td><input type='radio' name='permissions[remove_link]' [value]=false
+                  [(ngModel)]="editData.props.permissions.remove_link"></td>
+              <td><input type='radio' name='permissions[resize]' [value]=false
+                  [(ngModel)]="editData.props.permissions.resize"></td>
+              <td><input type='radio' name='permissions[delete]' [value]=false
+                  [(ngModel)]="editData.props.permissions.delete"></td>
+              <td><input type='radio' name='permissions[progress]' [value]=false
+                  [(ngModel)]="editData.props.permissions.progress"></td>
+            </tr>
+            <tr>
+              <td><b>Yes</b></td>
+              <td><input type='radio' name='permissions[drag]' [value]=true
+                  [(ngModel)]="editData.props.permissions.drag">
+              </td>
+              <td><input type='radio' name='permissions[add_link]' [value]=true
+                  [(ngModel)]="editData.props.permissions.add_link"></td>
+              <td><input type='radio' name='permissions[remove_link]' [value]=true
+                  [(ngModel)]="editData.props.permissions.remove_link"></td>
+              <td><input type='radio' name='permissions[resize]' [value]=true
+                  [(ngModel)]="editData.props.permissions.resize"></td>
+              <td><input type='radio' name='permissions[delete]' [value]=true
+                  [(ngModel)]="editData.props.permissions.delete"></td>
+              <td><input type='radio' name='permissions[progress]' [value]=true
+                  [(ngModel)]="editData.props.permissions.progress"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="button-group">
         <button type="button" (click)='closeModal()'> <i class="fa fa-times" aria-hidden="true"></i> CANCEL</button>
         <button type="submit"> <i class="fa fa-check" aria-hidden="true"></i> SUBMIT</button>

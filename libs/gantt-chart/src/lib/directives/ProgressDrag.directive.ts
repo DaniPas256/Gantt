@@ -68,7 +68,7 @@ export class ProgressDragDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
-      if (this.delta.x) {
+      if (this.delta.x && this.task.props.permissions.progress) {
         this.endDrag.emit({ drag: this.delta.x, task_id: this.task.id });
       }
 
@@ -78,11 +78,13 @@ export class ProgressDragDirective implements AfterViewInit, OnDestroy {
   }
 
   private translate() {
-    requestAnimationFrame(() => {
-      this.task.props.progress_drag = this.delta.x;
-      this.cd.detectChanges();
-      this.ganttService.dcWorkspace();
-      this.ganttService.dcTaskList();
-    });
+    if (this.task.props.permissions.progress) {
+      requestAnimationFrame(() => {
+        this.task.props.progress_drag = this.delta.x;
+        this.cd.detectChanges();
+        this.ganttService.dcWorkspace();
+        this.ganttService.dcTaskList();
+      });
+    }
   }
 }

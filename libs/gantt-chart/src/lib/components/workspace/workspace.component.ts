@@ -122,10 +122,11 @@ export class WorkspaceComponent implements OnInit {
     const source_name = task.name;
     const target_name = this.tasks_object[task.relations[index].target_id].name;
 
-    if (confirm(`Delete relation between task ${source_name} and ${target_name}?`)) {
-      task.relations.splice(index, 1);
-      this.ganttService.dcWorkspace();
-    }
+    if (task.props.permissions.remove_link && this.tasks_object[task.relations[index].target_id].props.permissions.remove_link)
+      if (confirm(`Delete relation between task ${source_name} and ${target_name}?`)) {
+        task.relations.splice(index, 1);
+        this.ganttService.dcWorkspace();
+      }
   }
 
   public taskRightEdge(task) {

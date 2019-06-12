@@ -129,6 +129,14 @@ export class GanttService {
         expanded: false,
         parents: this.getTaskParents(task) || [],
         has_children: this.tasks.find(item => item.parent == task.id) !== undefined,
+        permissions: {
+          drag: true,
+          add_link: true,
+          remove_link: true,
+          resize: true,
+          delete: true,
+          progress: true
+        },
         refresh: () => {
           this.dcWorkspace();
         }

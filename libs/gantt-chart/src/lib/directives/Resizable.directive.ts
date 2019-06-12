@@ -67,7 +67,7 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
     });
 
     mouseup$.pipe(debounceTime(50), takeUntil(this.destroy$)).subscribe(() => {
-      if (this.delta.x != 0) {
+      if (this.delta.x != 0 && this.task.props.permissions.resize) {
         this.endResize.emit({ task_id: this.task.id, edge: this.edge });
         this.task.props.isResized = false;
       }
@@ -77,18 +77,20 @@ export class ResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   private resize() {
-    requestAnimationFrame(() => {
-      if (this.edge === "left") {
-        this.task.props.resize_left = this.delta.x;
-      }
+    if (this.task.props.permissions.resize) {
+      requestAnimationFrame(() => {
+        if (this.edge === "left") {
+          this.task.props.resize_left = this.delta.x;
+        }
 
-      if (this.edge === "right") {
-        this.task.props.resize_right = this.delta.x;
-      }
+        if (this.edge === "right") {
+          this.task.props.resize_right = this.delta.x;
+        }
 
-      this.cd.detectChanges();
-      this.ganttService.dcWorkspace();
-      this.ganttService.dcTaskList();
-    });
+        this.cd.detectChanges();
+        this.ganttService.dcWorkspace();
+        this.ganttService.dcTaskList();
+      });
+    }
   }
 }

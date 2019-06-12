@@ -33,3 +33,7 @@
 .gantt-menu {
   width: calc(100% - 20px);
 }
+
+::ng-deep div[role="tooltip"] * {
+  font-family: "Lato", sans-serif !important;
+}

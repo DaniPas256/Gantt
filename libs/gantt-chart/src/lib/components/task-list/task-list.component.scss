@@ -83,7 +83,7 @@
   .delayed_sign {
     color: red;
     font-size: 16px;
-    margin-left: 10px;
+    margin-right: 5px;
   }
   .fa.task-icon {
     font-size: 16px;
@@ -94,6 +94,6 @@
     width: 100%;
   }
   .actions__holder > i {
-    cursor: pointer;
+    cursor: pointer !important;
   }
 }

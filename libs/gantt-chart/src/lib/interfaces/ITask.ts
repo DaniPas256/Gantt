@@ -24,8 +24,8 @@ export const generateTask = (id: number = 0, parent: number = 0) => {
         budget: Math.floor(Math.random() * 2000),
         status: ['S', 'IP', 'C'][getRandomArbitrary(0, 3)],
         parent,
-        start_date: '2019-05-0' + getRandomArbitrary(1, 9),
-        end_date: '2019-05-' + getRandomArbitrary(10, 31),
+        start_date: '2019-06-0' + getRandomArbitrary(1, 9),
+        end_date: '2019-06-' + getRandomArbitrary(10, 31),
         relations: [],
         progress: getRandomArbitrary(0, 100)
     } as ITask

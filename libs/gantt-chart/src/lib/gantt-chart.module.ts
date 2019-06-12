@@ -17,6 +17,8 @@ import { TrackScrollDirective } from './directives/track-scroll.directive';
 import { MenuComponent } from './components/menu/menu.component';
 import { LinkDragDirective } from './directives/link-drag.directive';
 
+import { TippyModule } from 'ng-tippy';
+
 const components = [
   EntryComponent,
   TimelineComponent,
@@ -43,7 +45,7 @@ const pipes = [
 const declarations = [...components, ...directives, ...pipes];
 
 @NgModule({
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TippyModule],
   declarations,
   providers: [GanttService, MoneyPipe, SafeHtml],
   exports: [EntryComponent]
