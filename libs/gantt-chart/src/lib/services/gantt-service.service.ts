@@ -85,6 +85,11 @@ export class GanttService {
     this.chart_end_date = new_value.end;
   }
 
+  /**
+   * Calc props for all tasks, and sorts tasks 
+   *
+   * @memberof GanttService
+   */
   public calc_tasks_details() {
     this.tasks_object = {};
     this.tasks.forEach(item => this.tasks_object[item.id] = item);
@@ -99,6 +104,13 @@ export class GanttService {
   public dcWorkspace() { this.workspace_cd.detectChanges(); }
   public dcTaskList() { this.task_list_cd.detectChanges(); }
 
+  /**
+   * For the first time sets all props value
+   * For all next calls resets flags, and calculate values i.e duration, left offset etc 
+   *
+   * @param {ITask} task
+   * @memberof GanttService
+   */
   public task_details(task: ITask) {
     const statuses_class = {
       'S': 'status-started',
@@ -163,6 +175,11 @@ export class GanttService {
     }
   }
 
+  /**
+   * For each task generate order number, depth level and WBS number
+   *
+   * @memberof GanttService
+   */
   public generateAdditionalTaskProperty() {
     const points_to_search = new Set([0]);
     const skip_children = new Set();
@@ -193,6 +210,13 @@ export class GanttService {
     })
   }
 
+  /**
+   * Returns all descendants of task for youngest/deeper one
+   *
+   * @param {ITask} task
+   * @returns
+   * @memberof GanttService
+   */
   public findAllChildren(task: ITask) {
     const children = new Set([task.id]);
     const skip_children = new Set();
@@ -216,6 +240,14 @@ export class GanttService {
     return Array.from(children).reverse();
   }
 
+  /**
+   * Returns array of IDs of given task ancestors
+   *
+   * @param {*} task
+   * @param {*} [accumulator=[]]
+   * @returns
+   * @memberof GanttService
+   */
   public getTaskParents(task, accumulator = []) {
     if (task.parent && this.tasks_object[task.parent] !== undefined) {
       accumulator.push(task.parent);
@@ -229,17 +261,39 @@ export class GanttService {
     }
   }
 
+  /**
+   * Checks if task is visible - all parents should be visible
+   *
+   * @param {*} task
+   * @returns
+   * @memberof GanttService
+   */
   public isTaskVisible(task) {
     if (task === undefined) return false;
 
     return task.props.parents.every(task_id => this.tasks_object[task_id] ? this.tasks_object[task_id].props.expanded : false);
   }
 
+  /**
+   * Sets data form modal - empty task for create and edit data for edit
+   * Shows modal
+   * 
+   * @param {(ITask | null)} [task=null]
+   * @memberof GanttService
+   */
   public showCreateTask(task: ITask | null = null) {
     this.edit_task = task ? task : emptyTask();
     this.show_modal = true;
   }
 
+  /**
+   * Saves data from modal
+   * Decide whether create task or edit task
+   * Trigger recalc of tasks props
+   *
+   * @param {*} [task=null]
+   * @memberof GanttService
+   */
   public hideModal(task = null) {
     this.show_modal = false;
     if (task) {
@@ -262,6 +316,11 @@ export class GanttService {
     this.dcWorkspace();
   }
 
+  /**
+   * Sorts task by WBS
+   *
+   * @memberof GanttService
+   */
   public sortTasks() {
     const sortWBSNumbers = (numbers) => {
       return numbers.map(function (e) {
@@ -295,6 +354,12 @@ export class GanttService {
     });
   }
 
+  /**
+   * Number of visible tasks
+   *
+   * @returns
+   * @memberof GanttService
+   */
   calc_visible_tasks() {
     return Object.keys(this.tasks_object).filter((task_id) => this.isTaskVisible(this.tasks_object[task_id])).length;
   }

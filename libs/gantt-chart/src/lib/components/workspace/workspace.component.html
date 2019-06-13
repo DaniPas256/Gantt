@@ -52,10 +52,12 @@
             (endDrag)='endProgressDrag($event)' [task]='task'
             [ngStyle]="{ 'transform': progressPosition( task ) }"></span>
 
-          <span *ngIf='task.props.permissions.add_link' (endDrag)='linkDragEnd($event)' [task]='task'
-            [attr.data-id]="task.id" [edge]='"left"' ganttLinkDrag class="link_handler link_handler--left"></span>
-          <span *ngIf='task.props.permissions.add_link' (endDrag)='linkDragEnd($event)' [task]='task'
-            [attr.data-id]="task.id" [edge]='"right"' ganttLinkDrag class="link_handler link_handler--right"></span>
+          <span [ngClass]='{"events-none": !task.props.permissions.add_link }' (endDrag)='linkDragEnd($event)'
+            [task]='task' [attr.data-id]="task.id" [edge]='"left"' ganttLinkDrag
+            class="link_handler link_handler--left"></span>
+          <span [ngClass]='{"events-none": !task.props.permissions.add_link }' (endDrag)='linkDragEnd($event)'
+            [task]='task' [attr.data-id]="task.id" [edge]='"right"' ganttLinkDrag
+            class="link_handler link_handler--right"></span>
         </div>
       </div>
     </ng-container>

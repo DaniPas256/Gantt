@@ -22,20 +22,20 @@
     height: 100%;
     width: 100%;
     border-radius: 10px;
-    &::after {
-      content: " ";
-      height: 40%;
-      background: rgba(25, 51, 64, 0.2);
-      position: absolute;
-      width: 100%;
-      bottom: 0;
-      z-index: -1;
-      opacity: 0.85;
-      border-radius: 10px;
-      mix-blend-mode: darken;
-      pointer-events: none;
-      filter: blur(1px);
-    }
+    // &::after {
+    //   content: " ";
+    //   height: 40%;
+    //   background: rgba(25, 51, 64, 0.2);
+    //   position: absolute;
+    //   width: 100%;
+    //   bottom: 0;
+    //   z-index: -1;
+    //   opacity: 0.85;
+    //   border-radius: 10px;
+    //   mix-blend-mode: darken;
+    //   pointer-events: none;
+    //   filter: blur(1px);
+    // }
     &.status-started {
       border: 1px solid $task-started-border;
       background: $task-started-color;
@@ -80,7 +80,7 @@
       border-radius: 10px;
     }
     .task_name {
-      color: white;
+      color: $task-name-color;
     }
   }
 }
@@ -147,7 +147,7 @@
   margin-left: -5px;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid black;
+  border-bottom: 5px solid $progress-triangle;
   cursor: e-resize;
   z-index: 10;
   top: 22px;
@@ -216,4 +216,9 @@
 
 .tooltip_description {
   display: none;
+}
+
+.events-none {
+  pointer-events: none;
+  opacity: 0.5;
 }

@@ -9,6 +9,13 @@ export class TrackScrollDirective {
   @Input() scroll;
 
   constructor(public ganttService: GanttService, public cd: ChangeDetectorRef) { }
+  /**
+   * Track scroll event for vertical scrolling
+   *
+   * @private
+   * @param {Event} $event
+   * @memberof TrackScrollDirective
+   */
   @HostListener('scroll', ['$event']) private onScroll($event: Event): void {
     requestAnimationFrame(() => {
       const scrollValue = $event.srcElement[this.scroll];

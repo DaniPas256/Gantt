@@ -11,6 +11,11 @@ export class DatepickerDirective implements OnChanges {
 
   constructor(private el: ElementRef) { }
 
+  /**
+   * Init pikadata datepicker
+   *
+   * @memberof DatepickerDirective
+   */
   ngAfterContentInit() {
     this.el.nativeElement.id = this.el.nativeElement.id ? this.el.nativeElement.id : this.id;
     this.el.nativeElement.readOnly = true;
@@ -33,6 +38,12 @@ export class DatepickerDirective implements OnChanges {
     }, 0)
   }
 
+  /**
+   * If there is a min date param passed will valid date
+   *
+   * @param {SimpleChanges} changes
+   * @memberof DatepickerDirective
+   */
   ngOnChanges(changes: SimpleChanges) {
     const min = this.minDate;
     const current = this.el.nativeElement.value

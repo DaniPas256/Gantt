@@ -44,10 +44,7 @@ export class EntryComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // this.ganttService.tasks = [];
-    // for (let i = 0; i < 100; i++) {
-    //   this.ganttService.tasks.push(generateTask(i));
-    // }
+
   }
 
   ngAfterViewInit() {

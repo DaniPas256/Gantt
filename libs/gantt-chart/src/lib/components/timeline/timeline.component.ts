@@ -16,7 +16,6 @@ export class TimelineComponent implements OnInit, OnDestroy {
 
   public subjectSubscription: Subscription = new Subscription();
   public scales = null;
-  public number_of_displayed_scales = 0;
   public keys = Object.keys;
 
   public get day_size() {
@@ -35,6 +34,11 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return this.ganttService.tasks;
   }
 
+  /**
+   * Set up initial dates and subscriptions for redrawing, fitting and zooming scale
+   *
+   * @memberof TimelineComponent
+   */
   ngOnInit() {
     this.ganttService.chart_dates = this.ganttService.tasks.length ? Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset) : Helpers.startingDates();
     this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
@@ -94,6 +98,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
     )
   }
 
+  /**
+   * Checks whether scale should be visible based of size of smallest scale
+   *
+   * @param {*} scale_name
+   * @returns
+   * @memberof TimelineComponent
+   */
   isScaleVisible(scale_name) {
     switch (scale_name) {
       case 'years':
@@ -110,6 +121,13 @@ export class TimelineComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  /**
+   * Redraw scale if needed, set up new date range
+   *
+   * @param {*} [payload=null]
+   * @returns
+   * @memberof TimelineComponent
+   */
   reDrawScale(payload = null) {
     if (this.config.options.lock_scale) {
       return;
@@ -127,10 +145,14 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.config.number_of_days = this.scales.totalNoD;
   }
 
+  /**
+   * Calc day size, so the tasks could fit on screen without scroll
+   *
+   * @memberof TimelineComponent
+   */
   fitToTasks() {
     const dates = Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset);
     this.ganttService.chart_dates = dates;
-    console.log(dates);
     this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
 
     const diff = Helpers.getDiffrence(dates.start, dates.end);
@@ -141,13 +163,25 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.config.number_of_days = this.scales.totalNoD;
   }
 
+  /**
+   * Sets new zoom value
+   *
+   * @param {*} new_value
+   * @memberof TimelineComponent
+   */
   setZoom(new_value) {
     this.ganttService.set_day_size = new_value;
     this.config.number_of_displayed_scales = Object.keys(this.scales).filter(name => this.isScaleVisible(name)).length - 1;
     this.config.number_of_days = this.scales.totalNoD;
   }
 
-  setVisible(new_value) {
+  /**
+   * Sets all task expaned or collapsed
+   *
+   * @param boolean new_value
+   * @memberof TimelineComponent
+   */
+  setVisible(new_value: boolean) {
     this.tasks.forEach((task: ITask) => {
       task.props.expanded = new_value;
     });

@@ -1,5 +1,5 @@
 $border-color: #d4d4d485;
-
+/*
 $task-started-color: #3498db;
 $task-started-border: #2980b9;
 
@@ -11,11 +11,26 @@ $task-completed-border: #16a085;
 
 $task-delayed-color: #e74c3c;
 $task-delayed-border: #c0392b;
+*/
 
+$task-started-border: #89e3f5;
+$task-started-color: #adf3fa;
+
+$task-in-progress-border: #fde797;
+$task-in-progress-color: #fefac7;
+
+$task-completed-border: #85dfd4;
+$task-completed-color: #b8f0eb;
+
+$task-delayed-border: #e36c7f;
+$task-delayed-color: #f07f8e;
+
+$progress-triangle: rgb(99, 99, 99);
+$task-name-color: black;
 $form-color: #f9f9f9;
 $overlay-color: rgba(0, 0, 0, 0.4);
 
-$relation-color: #f1c40f;
+$relation-color: #e36c7f;
 
 $menu-background: rgb(243, 243, 243);
 

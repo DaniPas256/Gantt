@@ -4,6 +4,21 @@ import { OnDestroy } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 
 export class Helpers {
+    /**
+     * Return object with dates between given range
+     * Day by day
+     * Week by week
+     * Month by month
+     * Quartal by quartal
+     * Year by Year
+     * Each key contains dates in given period, length of given perion i.e year 2019, length can be 209 days
+     *
+     * @static
+     * @param {*} start
+     * @param {*} end
+     * @returns
+     * @memberof Helpers
+     */
     static generateDates(start, end) {
         let setProp = (obj, arr, val) => {
             if (typeof arr === 'string') {
@@ -210,6 +225,13 @@ export class Helpers {
         return dates;
     }
 
+    /**
+     * Return first day of month of start date and last day of month of end day
+     *
+     * @static
+     * @returns {{ start: string, end: string }}
+     * @memberof Helpers
+     */
     public static startingDates(): { start: string, end: string } {
         const start = moment().startOf('month').format('YYYY-MM-DD');
         const end = moment().endOf('month').format('YYYY-MM-DD');
@@ -217,6 +239,16 @@ export class Helpers {
         return { start, end };
     }
 
+    /**
+     * Calc new range of dates at scale
+     * At the end it adds offset so there could be space task and border 
+     *
+     * @static
+     * @param {Array<ITask>} tasks
+     * @param {number} [offset=0]
+     * @returns
+     * @memberof Helpers
+     */
     public static findDatesRange(tasks: Array<ITask>, offset = 0) {
         const starts = [...tasks].map(item => moment(item.start_date));
         const ends = [...tasks].map(item => moment(item.end_date));
@@ -226,6 +258,16 @@ export class Helpers {
         return { start: min_start.add(-1 * offset, 'days').format('YYYY-MM-DD'), end: max_end.add(offset, 'days').format('YYYY-MM-DD') };
     }
 
+    /**
+     * Check if any task crossed offset at scale
+     *
+     * @static
+     * @param {{ start: string, end: string }} current_dates
+     * @param {Array<ITask>} tasks
+     * @param {number} [offset=0]
+     * @returns
+     * @memberof Helpers
+     */
     public static isOffsetIntouched(current_dates: { start: string, end: string }, tasks: Array<ITask>, offset = 0) {
         const starts = [...tasks].map(item => moment(item.start_date));
         const ends = [...tasks].map(item => moment(item.end_date));
@@ -238,10 +280,27 @@ export class Helpers {
         return min_start.isSameOrAfter(current_min) && max_end.isSameOrBefore(current_max);
     }
 
+    /**
+     * Return diffrence between dates in days
+     *
+     * @static
+     * @param {*} start
+     * @param {*} end
+     * @returns
+     * @memberof Helpers
+     */
     public static getDiffrence(start, end) {
         return moment(end).diff(moment(start), 'days') + 1;
     }
 
+    /**
+     * Returns Observable which complete when component is destroyed
+     *
+     * @static
+     * @param {OnDestroy} component
+     * @returns
+     * @memberof Helpers
+     */
     public static componentDestroyed(component: OnDestroy) {
         const oldNgOnDestroy = component.ngOnDestroy;
         const destroyed$ = new ReplaySubject<void>(1);

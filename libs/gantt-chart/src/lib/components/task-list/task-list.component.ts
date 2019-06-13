@@ -48,6 +48,12 @@ export class TaskListComponent implements OnInit {
     this.ganttService.showCreateTask(task);
   }
 
+  /**
+   * Function will delete task. First it will delete all task relations, and next find deepest childrens and start removing from there up to the task
+   *
+   * @param {ITask} task
+   * @memberof TaskListComponent
+   */
   deleteTask(task: ITask) {
     const confirm_answer = confirm(`Delete task ${task.name}?`);
 
@@ -67,6 +73,12 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  /**
+   * Finds and remove all relations sources and targets of given task
+   *
+   * @param {ITask} task
+   * @memberof TaskListComponent
+   */
   removeTaskRelation(task: ITask) {
     this.tasks.forEach((task_loop: ITask) => {
       let delete_indexes = [];
