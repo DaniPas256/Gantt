@@ -2,6 +2,8 @@
 
 Hello! This is simple gantt chart. I created it as my portfolio project. I hope You will enjoy it.
 
+[**SEE DEMO**](https://dpcode.pl/projects/gantt/)
+
 # Features
 
 - Create/edit task
