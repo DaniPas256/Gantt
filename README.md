@@ -2,6 +2,8 @@
 
 Hello! This is simple gantt chart. I created it as my portfolio project. I hope You will enjoy it.
 
+[**SEE DEMO**](https://dpcode.pl/projects/gantt/)
+
 # Features
 
 - Create/edit task
@@ -38,8 +40,6 @@ There is hell of work to do, most imporant:
 Create tasks and connect them with relations
 
 ![enter image description here](https://dpcode.pl/screenshots/gantt/screen1.jpg)
-
-Flexible scale, Your tasks can have duration of 1 day or 1 year or more
 
 ![enter image description here](https://dpcode.pl/screenshots/gantt/screen2.jpg)
 

@@ -2,7 +2,8 @@
   <div class="taskform__overlay" [ngClass]='{ "show": viewInit }'></div>
   <div class="taskform__content" [ngClass]='{ "show": viewInit }'>
     <span class="close_form" (click)='closeModal()'>&times;</span>
-    <h1 class="taskform__title">Create new task</h1>
+    <h1 class="taskform__title" *ngIf='!editData.props'>Create new task</h1>
+    <h1 class="taskform__title" *ngIf='editData.props'>Edit task</h1>
 
     <div class="validation" *ngIf='validation_error'>All required fields need to be filled.</div>
 

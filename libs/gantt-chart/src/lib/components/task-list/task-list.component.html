@@ -21,7 +21,7 @@
             <span title="Task is delayed" appTippy class='delayed_sign'>⚠</span>
           </ng-container>
           <span class="overflow__text {{ column.classes() }}"
-            [ngStyle]='{"margin-left.px": column.indent ? task.props.$depth*10 : 0, "cursor": column.click_event === undefined ? "auto" : "pointer" }'
+            [ngStyle]='{"margin-left.px": column.indent ? task.props.$depth*15 : 0, "cursor": column.click_event === undefined ? "auto" : "pointer" }'
             (click)='column.click_event === undefined ? false : column.click_event( task )'
             [innerHTML]='column.template( task )' *ngIf='!column.actions'></span>
 

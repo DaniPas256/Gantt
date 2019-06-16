@@ -151,6 +151,7 @@ export class GanttService {
         },
         refresh: () => {
           this.dcWorkspace();
+          this.reDrawScaleSubject.next();
         }
       }
     } else {

@@ -90,7 +90,7 @@
 }
 
 .workspace__container {
-  box-shadow: 0 1px #d4d4d4, -1px 0 #d4d4d4 inset;
+  box-shadow: 0 1px $border-color, -1px 0 $border-color inset;
   overflow: hidden;
   position: relative;
 }

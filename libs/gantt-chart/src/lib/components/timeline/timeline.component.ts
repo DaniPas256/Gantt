@@ -92,8 +92,8 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.subjectSubscription.add(
       this.ganttService.excolScaleSubject.pipe(takeUntil(Helpers.componentDestroyed(this))).subscribe((action: string) => {
         this.setVisible(action == 'expand');
+        this.ganttService.reDrawScaleSubject.next();
         this.ganttService.dcTaskList();
-        this.ganttService.dcWorkspace();
       })
     )
   }
@@ -134,12 +134,12 @@ export class TimelineComponent implements OnInit, OnDestroy {
     }
 
     if (this.config.options.resize_oo) {
-      if (Helpers.isOffsetIntouched(this.ganttService.chart_dates, this.ganttService.tasks, this.config.timeline_offset)) {
+      if (Helpers.isOffsetIntouched(this.ganttService.chart_dates, this.onlyVisibleTasks(), this.config.timeline_offset)) {
         return false;
       }
     }
 
-    this.ganttService.chart_dates = Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset);
+    this.ganttService.chart_dates = Helpers.findDatesRange(this.onlyVisibleTasks(), this.config.timeline_offset);
     this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
     this.config.number_of_displayed_scales = Object.keys(this.scales).filter(name => this.isScaleVisible(name)).length - 1;
     this.config.number_of_days = this.scales.totalNoD;
@@ -151,7 +151,7 @@ export class TimelineComponent implements OnInit, OnDestroy {
    * @memberof TimelineComponent
    */
   fitToTasks() {
-    const dates = Helpers.findDatesRange(this.ganttService.tasks, this.config.timeline_offset);
+    const dates = Helpers.findDatesRange(this.onlyVisibleTasks(), this.config.timeline_offset);
     this.ganttService.chart_dates = dates;
     this.scales = Helpers.generateDates(this.ganttService.chart_dates.start, this.ganttService.chart_dates.end);
 
@@ -173,6 +173,18 @@ export class TimelineComponent implements OnInit, OnDestroy {
     this.ganttService.set_day_size = new_value;
     this.config.number_of_displayed_scales = Object.keys(this.scales).filter(name => this.isScaleVisible(name)).length - 1;
     this.config.number_of_days = this.scales.totalNoD;
+  }
+
+  onlyVisibleTasks() {
+    const visible_tasks = [];
+
+    this.ganttService.tasks.forEach((task: ITask) => {
+      if (this.ganttService.isTaskVisible(task)) {
+        visible_tasks.push(task);
+      }
+    });
+
+    return visible_tasks;
   }
 
   /**
