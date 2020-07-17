@@ -38,7 +38,7 @@
     "@angular/router": "^7.0.0",
     "accounting": "^0.4.1",
     "core-js": "^2.5.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "lodash-decorators": "^6.0.1",
     "moment": "^2.24.0",
     "ng-tippy": "^3.2.2",
