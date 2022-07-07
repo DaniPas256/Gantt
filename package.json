@@ -40,7 +40,7 @@
     "core-js": "^2.5.4",
     "lodash": "^4.17.11",
     "lodash-decorators": "^6.0.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ng-tippy": "^3.2.2",
     "pikaday": "^1.8.0",
     "rxjs": "6.3.3",
