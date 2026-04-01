@@ -1,8 +1,6 @@
 # Gantt Chart
 
-Hello! This is simple gantt chart. I created it as my portfolio project. I hope You will enjoy it.
-
-[**SEE DEMO**](https://dpcode.pl/projects/gantt/)
+Simple gantt chart. I created it as my portfolio project.
 
 # Features
 
@@ -34,15 +32,3 @@ There is hell of work to do, most imporant:
 - Typescript
 - SCSS
 - RxJS
-
-## Screens
-
-Create tasks and connect them with relations
-
-![enter image description here](https://dpcode.pl/screenshots/gantt/screen1.jpg)
-
-![enter image description here](https://dpcode.pl/screenshots/gantt/screen2.jpg)
-
-![enter image description here](https://dpcode.pl/screenshots/gantt/screen3.jpg)
-
-![enter image description here](https://dpcode.pl/screenshots/gantt/screen4.jpg)
