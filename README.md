@@ -2,6 +2,8 @@
 
 Simple gantt chart. I created it as my portfolio project.
 
+[DEMO](https://danipas256.github.io/Gantt/)
+
 # Features
 
 - Create/edit task
