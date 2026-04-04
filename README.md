@@ -1,6 +1,8 @@
 # Gantt Chart
 
-Simple gantt chart. I created it as my portfolio project.
+My old portfolio project from 2019.
+
+Simple gantt chart.
 
 [DEMO](https://danipas256.github.io/Gantt/)
 
